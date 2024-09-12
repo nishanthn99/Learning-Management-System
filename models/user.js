@@ -12,6 +12,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+    static newUser(fname,lname,email,password,role){
+      const user=this.create({
+        firstname:fname,
+        lastname:lname,
+        password,
+        email,
+        role
+      })
+      return user;
+    }
+
+
   }
   User.init({
     firstname: DataTypes.STRING,
