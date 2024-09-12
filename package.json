@@ -1,0 +1,17 @@
+{
+  "name": "learning-management-system",
+  "version": "1.0.0",
+  "description": "learners and educators to engage with their learning",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Nishanth",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
