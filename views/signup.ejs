@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-Up Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div class="grid grid-cols-4 gap-2">
+        <div class="col-start-2 col-span-2">
+            <h3 class="py-6 italic text-2xl">
+                <%= title %>
+            </h3>
+            <form action="/newuser" method="post">
+                <div class="py-4">
+                    <label for="firstName" class="text-xl">Firstname:</label>
+                    <input type="text" id="firstName" name="firstName" placeholder="Enter Your First Name Here"
+                        class="p-2 border border-neutral-900 rounded-md w-full" required>
+                </div>
+                <div class="py-4">
+                    <label for="lastName" class="text-xl">LastName:</label>
+                    <input type="text" name="lastName" placeholder="Enter Your LastName Name Here" id="lastName"
+                        class="p-2 border border-neutral-900 rounded-md w-full">
+                </div>
+                <div class="py-4">
+                    <label for="email" class="text-xl">Email:</label>
+                    <input type="email" name="email" placeholder="Enter Your Email Here" id="email"
+                        class="p-2 border border-neutral-900 rounded-md w-full">
+                </div>
+                <div class="py-4">
+                    <label for="password" class="text-xl">Password:</label>
+                    <input type="password" name="password" placeholder="Set The Password Here" id="password"
+                        class="p-2 border border-neutral-900 rounded-md w-full">
+                </div>
+                <div class="py-4"><input type="button" class="m-auto p-3 bg-green-600 hover:bg-green-800 border-slate-300 text-white rounded-md" value="Sign-Up"></div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
