@@ -9,8 +9,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-    <div class="grid grid-cols-4 gap-2">
+<body class="relative">
+    <%- include('header') %>
+    <div class="grid grid-cols-4 gap-2 h-screen">
         <div class="col-start-2 col-span-2">
             <h3 class="py-6 italic text-2xl">
                 <%= title %>
@@ -54,6 +55,7 @@
             </form>
         </div>
     </div>
+    <%- include('footer') %>
 </body>
 
 </html>

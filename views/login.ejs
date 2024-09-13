@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" content="<%= _csrf %>">
     <title>LogIn Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
+    <%- include('header') %>
     <div class="grid grid-cols-4 gap-2">
         <div class="col-start-2 col-span-2">
             <h3 class="py-6 italic text-2xl">
@@ -16,6 +18,7 @@
             </h3>
             <div class="container w-full">
             <form action="/session" method="post">
+                <input type="hidden" name="_csrf" value="<%= _csrf %>">
                 <div class="py-4">
                     <label for="email" class="text-xl">Email:</label>
                     <input type="email" name="email" placeholder="Enter Your Email Here" id="email"
@@ -32,6 +35,7 @@
         </div>
         </div>
     </div>
+    <%- include('footer') %>
 </body>
 
 </html>

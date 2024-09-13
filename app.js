@@ -11,7 +11,53 @@ const tinycsrf=require('tiny-csrf');
 app.use(cookieParser('Shh! this is a secreat dont share this'))
 app.use(tinycsrf('this_should_be_32_character_long',['PUT','POST','DELETE']))
 
-const {User}=require('./models')
+//authetication
+const session = require('express-session');
+const localStrategy=require('passport-local')
+const passport=require('passport')
+const ensureLogin=require('connect-ensure-login')
+
+app.use(session({
+    secret: 'this_should_be_32_character_long',
+    resave: true,
+    saveUninitialized: true,
+    cookie: { maxAge:24*60*60*1000 }
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new localStrategy({
+    email:'email',password:'password'
+},(email,password,done)=>{
+    User.findOne({where:{
+        email,
+        password
+    }})
+    .then((email)=>{
+        return done(null,email)
+    })
+    .catch((err)=>{
+        return done(null,false)
+    })
+}));
+
+passport.serializeUser((user,done)=>{
+    console.log(`Serailized user with session id ${user.id}`)
+    done(null,user.id)
+})
+passport.deserializeUser((id,done)=>{
+    User.findByPk(id)
+    .then((user)=>{
+        done(null,user)
+    })
+    .catch((err)=>{
+        done(err,null)
+    })
+})
+
+
+const {User}=require('./models');
 app.use(express.static(path.join(__dirname,'public')));
 
 app.get('/',(req,res)=>{
@@ -34,7 +80,8 @@ app.get('/login',(req,res)=>{
 });
 
 app.post('/session',(req,res)=>{
-    const {firstName,lastName,email,password,role}=req.body;
+    const {email,password}=req.body;
+    
 })
 
 app.get('/dashboard',(req,res)=>{
@@ -45,7 +92,7 @@ app.get('/forgotpassword',(req,res)=>{
     res.render('forgotpassword',{title:"Forgot Password in Learning Management System"})
 });
 
-app.post('/resetpassword',(req,res)=>{
+app.put('/resetpassword',(req,res)=>{
     const {email}=req.body;
 })
 
