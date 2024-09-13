@@ -6,6 +6,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set('view engine','ejs')
 
+const cookieParser=require('cookie-parser');
+const tinycsrf=require('tiny-csrf');
+app.use(cookieParser('Shh! this is a secreat dont share this'))
+app.use(tinycsrf('this_should_be_32_character_long',['PUT','POST','DELETE']))
+
 const {User}=require('./models')
 app.use(express.static(path.join(__dirname,'public')));
 
@@ -14,7 +19,7 @@ app.get('/',(req,res)=>{
 });
 
 app.get('/signup',(req,res)=>{
-    res.render('signup',{title:"Create a New Account in Learning Management System"})
+    res.render('signup',{title:"Create a New Account in Learning Management System",_csrf:req.csrfToken()})
 });
 
 app.post('/newuser',async(req,res)=>{
@@ -25,7 +30,7 @@ app.post('/newuser',async(req,res)=>{
 })
 
 app.get('/login',(req,res)=>{
-    res.render('login',{title:"LogIn To Your Learning Management System Account"})
+    res.render('login',{title:"LogIn To Your Learning Management System Account",_csrf:req.csrfToken()})
 });
 
 app.post('/session',(req,res)=>{

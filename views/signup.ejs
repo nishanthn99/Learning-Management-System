@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign-Up Page</title>
+    <meta name="_csrf" content="<%= _csrf %>">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -15,6 +16,7 @@
                 <%= title %>
             </h3>
             <form action="/newuser" method="post">
+                <input type="hidden" name="_csrf" value="<%= _csrf %>">
                 <div class="py-4">
                     <label for="firstName" class="text-xl">Firstname:</label>
                     <input type="text" id="firstName" name="firstName" placeholder="Enter Your First Name Here"
