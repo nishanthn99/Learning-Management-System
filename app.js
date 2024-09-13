@@ -98,11 +98,20 @@ app.get('/dashboard',ensureLogin.ensureLoggedIn(),(req,res)=>{
 })
 
 app.get('/forgotpassword',(req,res)=>{
-    res.render('forgotpassword',{title:"Forgot Password in Learning Management System"})
+    res.render('forgotpassword',{title:"Forgot Password in Learning Management System",_csrf:req.csrfToken()})
 });
 
-app.put('/resetpassword',(req,res)=>{
-    const {email}=req.body;
+app.post('/resetpassword',async(req,res)=>{
+    const {email,password}=req.body;
+    try{const user=await User.findOne({where:{
+        email:email
+    }})
+    await user.update({password:password})
+    res.redirect('/login')
+    }
+    catch(err){
+        console.log(err)
+    }
 })
 
 
