@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Page.belongsTo(models.Chapter,{foreignKey:'chapterId'});
+      Page.belongsTo(models.Course,{foreignKey:'courseId'});
+      Page.hasMany(models.Progress,{foreignKey:'pageId'});
     }
   }
   Page.init({

@@ -5,6 +5,12 @@ const { query } = require('express');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
+    await queryInterface.addColumn('Chapters','courseId',{
+      type:Sequelize.INTEGER,
+      references:{
+        model:'Courses',
+        key:'id'}
+    })
     /**
      * Add altering commands here.
      *
@@ -14,6 +20,8 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
+    await queryInterface.removeColumn('Chapters','courseId');
+
     /**
      * Add reverting commands here.
      *

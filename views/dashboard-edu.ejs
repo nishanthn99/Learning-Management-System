@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,33 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./css/styles.css">
 </head>
+
 <body>
     <%- include('header') %>
-    <div class="p-2">
-        <div><%= title %></div>
-        <%= role %>
-    </div>
-    <%- include('footer') %>
+    <div>
+        <div class="p-6">
+            <div class="text-2xl font-semibold text-black-800">
+                <%= title %>
+            </div>
+            <div class="text-xl">You are an <span class="text-red-400 italic">
+                    <%= role %>
+                </span> in this platform</div>
+            <div class="py-2"><button class="rounded py-2 px-3 bg-green-500 hover:bg-green-700"><a
+                        href="/createcourse">Create New
+                        Course</a></button>
+            </div>
+            <div class="py-2"><button class="rounded py-2 px-3 bg-lime-500 hover:bg-lime-700"><a
+                        href="/mycourse">view My
+                        Course</a></button>
+            </div>
+            <div class="py-2"> <button class="rounded py-2 px-3 bg-purple-500 hover:bg-purple-700"><a
+                        href="/viewreport">View
+                        Report</a></button>
+            </div>
+        </div>
+        
+        </div>
+        <%- include('footer') %>
 </body>
+
 </html>

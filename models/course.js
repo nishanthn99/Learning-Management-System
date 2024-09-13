@@ -11,6 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Course.belongsTo(models.User, { foreignKey: 'userId' });
+      Course.hasMany(models.Chapter, { foreignKey: 'courseId' });
+      Course.hasMany(models.Page,{foreignKey:'courseId'});
+      Course.hasMany(models.Enrollment,{foreignKey:'courseId'});
+      Course.hasMany(models.Progress,{foreignKey:'courseId'});
+    }
+    static async addCourse(userId,coursetitle){
+      const course=await this.create({
+        educatorId:userId,
+        coursetitle,
+      })
+      return course;
     }
   }
   Course.init({

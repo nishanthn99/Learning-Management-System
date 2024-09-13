@@ -60,7 +60,7 @@ passport.deserializeUser((id, done) => {
 })
 
 
-const { User } = require('./models');
+const { User,Course } = require('./models');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
@@ -105,7 +105,7 @@ app.post('/session', passport.authenticate('local', { failureRedirect: '/login',
     }
 });
 
-app.get('/dashboard-edu', ensureLogin.ensureLoggedIn(), (req, res) => {
+app.get('/dashboard-edu',ensureLogin.ensureLoggedIn(),(req, res) => {
     res.render('dashboard-edu', { title: "Welcome to Your Learning Management System Dashboard",role:"Educator"})
 })
 
@@ -113,6 +113,21 @@ app.get('/dashboard-stu', ensureLogin.ensureLoggedIn(), (req, res) => {
     res.render('dashboard-stu', { title: "Welcome to Your Learning Management System Dashboard",role:"Student"})
 })
 
+app.get('/createcourse',(req,res)=>{
+    res.render('createcourse',{title:"Create a New Course in Learning Management System",_csrf:req.csrfToken()});
+})
+
+app.post('/newcourse',ensureLogin.ensureLoggedIn(),async(req,res)=>{
+    const id=JSON.parse(req.user.id);
+    try{
+        const course=await Course.addCourse(req.user.id,req.body.title);
+        console.log(course)
+        res.redirect('/dashboard-edu');
+    }
+    catch(err){
+        console.log(err);
+        }
+})
 
 app.get('/forgotpassword', (req, res) => {
     res.render('forgotpassword', { title: "Forgot Password in Learning Management System", _csrf: req.csrfToken() })

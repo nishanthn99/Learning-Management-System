@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Course</title>
+</head>
+
+<body>
+    <form action="/newcourse" method="post">
+        <input type="hidden" name="_csrf" value="<%= _csrf %>">
+        <div>
+            <label for="name">Course Name:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div>
+            <input type="submit" value="Create Course" class="p-3 bg-green-500 rounded hover:bg-green-700">
+        </div>
+    </form>
+</body>
+
+</html>
