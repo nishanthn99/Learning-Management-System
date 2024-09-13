@@ -28,17 +28,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new localStrategy({
-    email:'email',password:'password'
-},(email,password,done)=>{
+    usernameField: 'email',
+    passwordField: 'password'
+},(username,password,done)=>{
     User.findOne({where:{
-        email,
-        password
+        email:username,
+        password:password
     }})
-    .then((email)=>{
-        return done(null,email)
+    .then((user)=>{
+        return done(null,user)
     })
     .catch((err)=>{
-        return done(null,false)
+        return err
     })
 }));
 
@@ -70,21 +71,29 @@ app.get('/signup',(req,res)=>{
 
 app.post('/newuser',async(req,res)=>{
     const {firstName,lastName,email,password,role}=req.body;
-    const user=await User.newUser(firstName,lastName,email,password,role);
+    try{const user=await User.newUser(firstName,lastName,email,password,role);
+    req.login(user,(err)=>{
+        if(err){
+            console.log(err);
+        }
+        res.redirect('/dashboard')
+    })
     console.log(`inserted with id${user.id}`)
-    res.redirect('/dashboard')
+    }
+    catch(err){
+        console.log(err)
+    }
 })
 
 app.get('/login',(req,res)=>{
     res.render('login',{title:"LogIn To Your Learning Management System Account",_csrf:req.csrfToken()})
 });
 
-app.post('/session',(req,res)=>{
-    const {email,password}=req.body;
-    
-})
+app.post('/session',passport.authenticate('local',{failureRedirect:'/login',}),(req,res)=>{
+    res.redirect('/dashboard');
+});
 
-app.get('/dashboard',(req,res)=>{
+app.get('/dashboard',ensureLogin.ensureLoggedIn(),(req,res)=>{
     res.render('dashboard',{title:"Welcome to Your Learning Management System Dashboard"})
 })
 

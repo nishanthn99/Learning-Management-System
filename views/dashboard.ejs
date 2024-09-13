@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DashBoard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-    <%= title %>
+    <%- include('header') %>
+    <div class="p-2">
+        <div><%= title %></div>
+    </div>
+    <%- include('footer') %>
 </body>
 </html>
