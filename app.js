@@ -4,7 +4,14 @@ const bodyParser = require('body-parser');
 const path = require('path');
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
+
+//adding routes in separate files
+const userRoute = require('./routes/userRoute');
+const courseRoute = require('./routes/courseRoute');
+const chapterRoute = require('./routes/chapterRoute');
+const pageRoute = require('./routes/pageRoute');
+
 
 const cookieParser = require('cookie-parser');
 const tinycsrf = require('tiny-csrf');
@@ -180,6 +187,14 @@ app.post('/resetpassword', async (req, res) => {
 app.get('/logout', (req, res) => {
     req.logout()
     res.redirect('/login')
+});
+
+app.use('/',userRoute);
+app.use('/course',courseRoute);
+app.use('/course/:courseid/chapter',chapterRoute);
+app.use('/course/:courseid/page',pageRoute);
+app.get('*',(req,res)=>{
+    res.status(404).send("Page Not Found");
 })
 
 module.exports = app;
