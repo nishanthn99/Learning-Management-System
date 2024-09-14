@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Chapter</title>
+</head>
+<body>
+    <form action="/<%=id %>/newchapter" method="post">
+        <input type="hidden" name="_csrf" value="<%= _csrf %>">
+        <div>
+            <label for="name">Chapter Name:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div>
+            <label for="name">Chapter description:</label>
+            <input type="text" id="desc" name="desc" required>
+        </div>
+        <div>
+            <input type="submit" value="Create Chapter" class="p-3 bg-green-500 rounded hover:bg-green-700">
+        </div>
+    </form>
+</body>
+
+</html>

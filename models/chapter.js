@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       Chapter.hasMany(models.Page, { foreignKey: 'chapterId' });
 
     }
+    static async addChapter(title,desc,courseId){
+      const chapter = await this.create({chaptertitle:title,description:desc,courseId,});
+      return chapter;
+    }
   }
   Chapter.init({
     chaptertitle: DataTypes.STRING,

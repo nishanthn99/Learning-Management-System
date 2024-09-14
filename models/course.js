@@ -11,13 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Course.belongsTo(models.User, { foreignKey: 'userId' });
+      Course.belongsTo(models.User, { foreignKey: 'educatorId' });
       Course.hasMany(models.Chapter, { foreignKey: 'courseId' });
       Course.hasMany(models.Page,{foreignKey:'courseId'});
       Course.hasMany(models.Enrollment,{foreignKey:'courseId'});
       Course.hasMany(models.Progress,{foreignKey:'courseId'});
     }
-    static async addCourse(userId,coursetitle){
+    static async addCourse(coursetitle,userId){
       const course=await this.create({
         educatorId:userId,
         coursetitle,

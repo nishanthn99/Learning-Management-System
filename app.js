@@ -60,7 +60,7 @@ passport.deserializeUser((id, done) => {
 })
 
 
-const { User,Course } = require('./models');
+const { User,Course,Chapter,Page} = require('./models');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
@@ -120,13 +120,40 @@ app.get('/createcourse',(req,res)=>{
 app.post('/newcourse',ensureLogin.ensureLoggedIn(),async(req,res)=>{
     const id=JSON.parse(req.user.id);
     try{
-        const course=await Course.addCourse(req.user.id,req.body.title);
-        console.log(course)
-        res.redirect('/dashboard-edu');
+        const course=await Course.addCourse(req.body.title,id);
+        res.redirect(`/${id}/createchapter`);
     }
     catch(err){
         console.log(err);
         }
+});
+
+app.get('/:id/createchapter',ensureLogin.ensureLoggedIn(),(req,res)=>{
+    res.render('createchapter',{title:"Create a New Chapter in Learning Management System",_csrf:req.csrfToken(),id:req.params.id})
+})
+
+app.post('/:id/newchapter',ensureLogin.ensureLoggedIn(),async(req,res)=>{
+    const courseid=JSON.parse(req.params.id)
+    try{
+        const chapter=await Chapter.addChapter(req.body.title,req.body.desc,courseid);
+        console.log(chapter)
+        res.redirect(`/${courseid}/createpage`);
+        }
+        catch(err){
+            console.log(err);
+        }
+})
+
+app.get('/:courseid/createpage',ensureLogin.ensureLoggedIn(),async(req,res)=>{
+    try{const coureseid=req.params.courseid;
+    const chapter=await Chapter.findAll({where:{
+        courseId:coureseid
+    }});
+    res.render('createpage',{title:"Create a New Page in Learning Management System",_csrf:req.csrfToken(),courseId:req.params.courseid,chapter,});
+    }
+    catch(err){
+        console.log(err);
+    }
 })
 
 app.get('/forgotpassword', (req, res) => {
