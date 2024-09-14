@@ -6,10 +6,10 @@
     <title>Create Chapter</title>
 </head>
 <body>
-    <form action="/<%=id %>/newchapter" method="post">
+    <form action="/course/<%= id %>/chapter" method="post">
         <input type="hidden" name="_csrf" value="<%= _csrf %>">
         <div>
-            <label for="name">Chapter Name:</label>
+            <label for="name">Chapter Name:<%=id %></label>
             <input type="text" id="title" name="title" required>
         </div>
         <div>

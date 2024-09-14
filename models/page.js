@@ -15,6 +15,13 @@ module.exports = (sequelize, DataTypes) => {
       Page.belongsTo(models.Course,{foreignKey:'courseId'});
       Page.hasMany(models.Progress,{foreignKey:'pageId'});
     }
+    static addPage(coureseId,pagetitle,content){
+      return Page.create({
+        courseId:coureseId,
+        pagetitle:pagetitle,
+        content:content,
+        });
+    }
   }
   Page.init({
     pagetitle: DataTypes.STRING,

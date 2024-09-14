@@ -2,21 +2,32 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 const passport = require("passport");
 const userController = require("../controllers/user.js");
-router.get("/", (req, res) => {
-  res.redirect("/login");
-});
-router.get("/signup", userController.signup);
-router.post("/users",userController.postUsers);
+const ensureLogin=require('connect-ensure-login');
 
-router.get("/login",userController.login);
+router.get("/", userController.showIndex);
+
+router.get("/signup", userController.showSignup);
+
+router.post("/newuser",userController.postUsers);
+
+router.get("/login",userController.showLogin);
 router.post(
   "/session",
   passport.authenticate("local",  { failureRedirect: '/login', failureFlash: true }),
   userController.postSession
 );
-router.get("/signout",userController.signout);
+router.get("/logout",userController.logout);
 
-router.get("/resetpassword", userController.resetPassword);
+router.get("/forgotpassword", userController.resetPassword);
 
-router.post("/setpassword", userController.setPassword);
+router.post("/resetpassword", userController.resetPassword);
+
+router.get('/dashboard-edu',ensureLogin.ensureLoggedIn(),(req, res) => {
+  res.render('dashboard-edu', { title: "Welcome to Your Learning Management System Dashboard",role:"Educator"})
+});
+
+router.get('/dashboard-stu', ensureLogin.ensureLoggedIn(), (req, res) => {
+  res.render('dashboard-stu', { title: "Welcome to Your Learning Management System Dashboard",role:"Student"})
+});
+
 module.exports = router;

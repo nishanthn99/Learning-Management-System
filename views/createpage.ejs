@@ -9,7 +9,7 @@
 
 <body>
     <%- include('header') %>
-    <form action="/<%= courseId %>/newpage" method="post">
+    <form action="course/<%= courseId %>/page/newpage" method="post">
       <input type="hidden" name="_csrf" value="<%=_csrf%>" />
       <div class="col-5">
         <label class="form-label fs-5 fw-medium">Select Chapter</label>

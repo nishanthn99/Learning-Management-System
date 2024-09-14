@@ -70,124 +70,16 @@ passport.deserializeUser((id, done) => {
 const { User,Course,Chapter,Page} = require('./models');
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
-    res.render('index', { title: "Welcome to Learning Management System" })
-});
 
-app.get('/signup', (req, res) => {
-    res.render('signup', { title: "Create a New Account in Learning Management System", _csrf: req.csrfToken() })
-});
+// app.get('/createcourse',)
 
-app.post('/newuser', async (req, res) => {
-    const { firstName, lastName, email, password, role } = req.body;
-    try {
-        const user = await User.newUser(firstName, lastName, email, password, role);
-        req.login(user, (err) => {
-            if (err) {
-                console.log(err);
-            }
-            if(role=="Educator"){
-            res.redirect('/dashboard-edu')}
-            else{
-                res.redirect('/dashboard-stu')
-                }
-        })
-        console.log(`inserted with id${user.id}`)
-    }
-    catch (err) {
-        console.log(err)
-    }
-})
+// app.post('/newcourse',ensureLogin.ensureLoggedIn(),);
 
-app.get('/login', (req, res) => {
-    res.render('login', { title: "LogIn To Your Learning Management System Account", _csrf: req.csrfToken() })
-});
+// app.get('/:id/createchapter',ensureLogin.ensureLoggedIn(),)
 
-app.post('/session', passport.authenticate('local', { failureRedirect: '/login', }), (req, res) => {
-    if (req.user.role == 'Educator') {
-        res.redirect('/dashboard-edu');
-    }
-    else {
-        res.redirect('/dashboard-stu');
-    }
-});
+// app.post('/:id/newchapter',ensureLogin.ensureLoggedIn(),)
 
-app.get('/dashboard-edu',ensureLogin.ensureLoggedIn(),(req, res) => {
-    res.render('dashboard-edu', { title: "Welcome to Your Learning Management System Dashboard",role:"Educator"})
-})
-
-app.get('/dashboard-stu', ensureLogin.ensureLoggedIn(), (req, res) => {
-    res.render('dashboard-stu', { title: "Welcome to Your Learning Management System Dashboard",role:"Student"})
-})
-
-app.get('/createcourse',(req,res)=>{
-    res.render('createcourse',{title:"Create a New Course in Learning Management System",_csrf:req.csrfToken()});
-})
-
-app.post('/newcourse',ensureLogin.ensureLoggedIn(),async(req,res)=>{
-    const id=JSON.parse(req.user.id);
-    try{
-        const course=await Course.addCourse(req.body.title,id);
-        res.redirect(`/${id}/createchapter`);
-    }
-    catch(err){
-        console.log(err);
-        }
-});
-
-app.get('/:id/createchapter',ensureLogin.ensureLoggedIn(),(req,res)=>{
-    res.render('createchapter',{title:"Create a New Chapter in Learning Management System",_csrf:req.csrfToken(),id:req.params.id})
-})
-
-app.post('/:id/newchapter',ensureLogin.ensureLoggedIn(),async(req,res)=>{
-    const courseid=JSON.parse(req.params.id)
-    try{
-        const chapter=await Chapter.addChapter(req.body.title,req.body.desc,courseid);
-        console.log(chapter)
-        res.redirect(`/${courseid}/createpage`);
-        }
-        catch(err){
-            console.log(err);
-        }
-})
-
-app.get('/:courseid/createpage',ensureLogin.ensureLoggedIn(),async(req,res)=>{
-    try{const coureseid=req.params.courseid;
-    const chapter=await Chapter.findAll({where:{
-        courseId:coureseid
-    }});
-    res.render('createpage',{title:"Create a New Page in Learning Management System",_csrf:req.csrfToken(),courseId:req.params.courseid,chapter,});
-    }
-    catch(err){
-        console.log(err);
-    }
-})
-
-app.get('/forgotpassword', (req, res) => {
-    res.render('forgotpassword', { title: "Forgot Password in Learning Management System", _csrf: req.csrfToken() })
-});
-
-app.post('/resetpassword', async (req, res) => {
-    const { email, password } = req.body;
-    try {
-        const user = await User.findOne({
-            where: {
-                email: email
-            }
-        })
-        await user.update({ password: password })
-        res.redirect('/login')
-    }
-    catch (err) {
-        console.log(err)
-    }
-})
-
-
-app.get('/logout', (req, res) => {
-    req.logout()
-    res.redirect('/login')
-});
+//app.get('/:courseid/createpage',ensureLogin.ensureLoggedIn(),)
 
 app.use('/',userRoute);
 app.use('/course',courseRoute);
