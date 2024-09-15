@@ -7,8 +7,8 @@ const {isEducator,isOwner}=require('../middleware');
 router.get('/createchapter',chapterController.getNewChapter);
 router.get('/',chapterController.getAllChapter);
 router.post('/',EnsureLogin.ensureLoggedIn(),chapterController.postNewChapter);
-router.get("/:chapterid/edit",connectEnsureLogin.ensureLoggedIn(),chapterController.getEditChapter);
-router.put("/:chapterid",connectEnsureLogin.ensureLoggedIn(),isOwner,chapterController.updateChapter);
-router.delete("/:chapterid", connectEnsureLogin.ensureLoggedIn(),isOwner,chapterController.deleteChapter);
+router.get("/:chapterid/edit",EnsureLogin.ensureLoggedIn(),chapterController.getEditChapter);
+router.put("/:chapterid",EnsureLogin.ensureLoggedIn(),isOwner,chapterController.updateChapter);
+router.delete("/:chapterid", EnsureLogin.ensureLoggedIn(),isOwner,chapterController.deleteChapter);
 
 module.exports=router

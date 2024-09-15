@@ -1,11 +1,12 @@
-const {Course,Chapter,Page}=require('../models');
+const {Course,Chapter,Page,Progress}=require('../models');
 
 module.exports.getNewPage=async(req,res)=>{
-    try{const coureseid=req.params.courseid;
-    const chapter=await Chapter.findAll({where:{
-        courseId:coureseid
-    }});
-    res.render('createpage',{title:"Create a New Page in Learning Management System",_csrf:req.csrfToken(),courseId:req.params.courseid,chapter,});
+    try {
+    let courseId = req.params.courseid;
+    let chapterId = req.params.chapterid;
+    let chapter = await Chapter.findByPk(chapterId);
+    let chapters = await Chapter.findAll({ where: { courseId }, order: [['id']] });
+    res.render('createpage',{title:"Create a New Page in Learning Management System",_csrf:req.csrfToken(),courseId,chapter,chapters});
     }
     catch(err){
         console.log(err);
@@ -74,12 +75,13 @@ module.exports.getPages = async (req, res) => {
         let chapterId = req.params.chapterid;
         let course = await Course.findByPk(courseId);
         let chapter = await Chapter.findByPk(chapterId);
-        let page = await Page.findOne({
+        const page = await Page.findOne({
             where: {
                 chapterId,
             }, limit: 1,
             order: [['id', 'ASC']],
         });
+        console.log(page);
         let pages = await Page.findAll({
             where: {
                 chapterId,
@@ -92,7 +94,7 @@ module.exports.getPages = async (req, res) => {
         }
         const isMarked = await Progress.MarkedAsComplete(userId, page.id);
         if (req.accepts("html")) {
-            res.render("pages/show.ejs", { pages, course, chapter, page, nextIndex, _csrf: req.csrfToken(), isMarked });
+            res.render("showpage.ejs", { pages, course, chapter, page, nextIndex, _csrf: req.csrfToken(), isMarked });
         } else {
             res.json({ pages, course, chapter, page, nextIndex, csrfToken: req.csrfToken(), isMarked });
         }

@@ -15,10 +15,10 @@ module.exports.isEducator = (req, res, next) => {
 module.exports.isOwner = async (req, res, next) => {
     try {
         // Get the courseId from the request parameters
-        const { CourseId } = req.params;
+        const { courseid } = req.params;
 
         // Find the course by courseId
-        const course = await Course.findByPk(CourseId);
+        const course = await Course.findByPk(courseid);
 
         // Check if the course exists
         if (!course) {
@@ -26,7 +26,7 @@ module.exports.isOwner = async (req, res, next) => {
         }
 
         // Check if the logged-in user is the owner of the course
-        if (req.user && course.EducatorId === req.user.id) {
+        if (req.user && course.educatorId === req.user.id) {
             // User is the owner, proceed to the next middleware/route handler
            return next();
         } else {
@@ -42,13 +42,13 @@ module.exports.isOwner = async (req, res, next) => {
 module.exports.isOwnerOrEnrolled = async (req, res, next) => {
     try {
         // Get the courseId from the request parameters
-        const { CourseId } = req.params;
+        const { courseid } = req.params;
 
         // Get the userId from the authenticated user
         const userId = req.user.id;
 
         // Check if the user is the owner of the course
-        const course = await Course.findByPk(CourseId);
+        const course = await Course.findByPk(courseid);
 
         // Check if the course exists
         if (!course) {
@@ -56,7 +56,7 @@ module.exports.isOwnerOrEnrolled = async (req, res, next) => {
         }
 
         // Check if the logged-in user is the owner of the course
-        if (req.user && course.EducatorId === req.user.id) {
+        if (req.user && course.educatorId === req.user.id) {
             // User is the owner, proceed to the next middleware/route handler
             return next();
         } else {
@@ -64,7 +64,7 @@ module.exports.isOwnerOrEnrolled = async (req, res, next) => {
             const enrollment = await Enrollment.findOne({
                 where: {
                     userId,
-                    courseId:CourseId,
+                    courseid
                 },
             });
 
