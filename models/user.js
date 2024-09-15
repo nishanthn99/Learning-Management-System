@@ -18,10 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
       });
       User.hasMany(models.Enrollment, {
-        foreignKey: "EducatorId",
+        foreignKey: "educatorId",
       });
       User.hasMany(models.Progress, {
-        foreignKey: "StudentID",
+        foreignKey: "studentId",
       });
     }
     static newUser(fname,lname,email,password,role){

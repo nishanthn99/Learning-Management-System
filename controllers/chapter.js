@@ -54,7 +54,7 @@ module.exports.getAllChapter = async (req, res) => {
         if (req.accepts("html")) {
             res.render("showchapter.ejs", { course, chapter, _csrf: req.csrfToken() });
         } else {
-            res.json({ chapters });
+            res.json({ chapter });
         }
     } catch (err) {
         console.error(err);
