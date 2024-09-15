@@ -15,7 +15,7 @@ module.exports.getNewPage=async(req,res)=>{
 module.exports.postNewPage=async(req,res)=>{
     try{
         const coureseid=req.params.courseid;
-        await Page.addPage(coureseid,req.body.title,req.body.content);
+        await Page.addPage(coureseid,req.body.chapterId,req.body.title,req.body.content);
         res.redirect('/dashboard-edu');
     }
     catch(err){

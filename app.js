@@ -4,7 +4,10 @@ const bodyParser = require('body-parser');
 const path = require('path');
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+
 app.set('view engine', 'ejs');
+
 
 //adding routes in separate files
 const userRoute = require('./routes/userRoute');
@@ -22,7 +25,7 @@ app.use(tinycsrf('this_should_be_32_character_long', ['PUT', 'POST', 'DELETE']))
 const session = require('express-session');
 const localStrategy = require('passport-local')
 const passport = require('passport')
-const ensureLogin = require('connect-ensure-login')
+//const ensureLogin = require('connect-ensure-login')
 
 app.use(session({
     secret: 'this_should_be_32_character_long',

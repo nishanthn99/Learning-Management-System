@@ -1,16 +1,14 @@
 'use strict';
 
-const { sequelize } = require('../models');
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('Users','chapterId',{
-      types:Sequelize.INTEGER,
+    await queryInterface.addColumn('Pages','chapterId',{
+      type:Sequelize.INTEGER,
       references:{
         model:'Chapters',
         key:'id'
-      }
+        },
     })
     /**
      * Add altering commands here.
@@ -21,7 +19,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.removeColumn('Chapters','chapterId');
+    await queryInterface.removeColumn('Pages','chapterId')
     /**
      * Add reverting commands here.
      *

@@ -6,8 +6,7 @@ module.exports.getNewChapter=(req,res)=>{
 
 module.exports.postNewChapter=async(req,res)=>{
     try{
-        const chapter=await Chapter.addChapter(req.body.title,req.body.desc,req.params.courseid);
-        console.log(chapter)
+        await Chapter.addChapter(req.body.title,req.body.desc,req.params.courseid);
         res.redirect(`/course/${req.params.courseid}/page`);
         }
         catch(err){
