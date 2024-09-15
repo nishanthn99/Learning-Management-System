@@ -4,7 +4,8 @@ const EnsureLogin=require('connect-ensure-login');
 const chapterController=require('../controllers/chapter')
 const {isEducator,isOwner}=require('../middleware');
 
-router.get('/',EnsureLogin.ensureLoggedIn(),chapterController.getNewChapter);
+router.get('/createchapter',chapterController.getNewChapter);
+router.get('/',chapterController.getAllChapter);
 router.post('/',EnsureLogin.ensureLoggedIn(),chapterController.postNewChapter);
 
 module.exports=router
