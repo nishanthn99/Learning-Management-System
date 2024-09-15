@@ -71,17 +71,18 @@ module.exports.getPages = async (req, res) => {
     try {
         let userId = req.user.id;
         let courseId = req.params.courseid;
+        let chapterId = req.params.chapterid;
         let course = await Course.findByPk(courseId);
         let chapter = await Chapter.findByPk(chapterId);
         let page = await Page.findOne({
             where: {
-                courseId: courseId,
+                ChapterID: chapterId,
             }, limit: 1,
             order: [['id', 'ASC']],
         });
         let Pages = await Page.findAll({
             where: {
-                courseId: courseId,
+                ChapterID: chapterId,
             },
             order: [['id']]
         });
@@ -91,7 +92,7 @@ module.exports.getPages = async (req, res) => {
         }
         const isMarked = await Progress.MarkedAsComplete(userId, page.id);
         if (req.accepts("html")) {
-            res.render("showpage.ejs", { Pages, course, chapter, page, nextIndex, csrfToken: req.csrfToken(), isMarked });
+            res.render("pages/show.ejs", { Pages, course, chapter, page, nextIndex, csrfToken: req.csrfToken(), isMarked });
         } else {
             res.json({ Pages, course, chapter, page, nextIndex, csrfToken: req.csrfToken(), isMarked });
         }

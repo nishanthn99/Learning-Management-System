@@ -87,7 +87,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/',userRoute);
 app.use('/course',courseRoute);
 app.use('/course/:courseid/chapter',chapterRoute);
-app.use('/course/:courseid/page',pageRoute);
+app.use('/course/:courseid/chapter/:chapterid/page',pageRoute);
 app.get('*',(req,res)=>{
     res.status(404).send("Page Not Found");
 })
