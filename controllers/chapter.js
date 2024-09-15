@@ -48,13 +48,13 @@ module.exports.getAllChapter = async (req, res) => {
         res.locals.enrolled = await Enrollment.findAll({ where: { userId, courseId } });
 
         // Fetch all chapters for the given course
-        let chapter = await Chapter.findAll({ where: { courseId: courseId }, order: [['id']] });
+        let chapters = await Chapter.findAll({ where: { courseId: courseId }, order: [['id']] });
 
         // Render or respond based on the request format
         if (req.accepts("html")) {
-            res.render("showchapter.ejs", { course, chapter, _csrf: req.csrfToken() });
+            res.render("showchapter.ejs", {currUser:req.user, course, chapters, _csrf: req.csrfToken() });
         } else {
-            res.json({ chapter });
+            res.json({ chapters });
         }
     } catch (err) {
         console.error(err);

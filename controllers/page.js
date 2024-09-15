@@ -94,9 +94,9 @@ module.exports.getPages = async (req, res) => {
         }
         const isMarked = await Progress.MarkedAsComplete(userId, page.id);
         if (req.accepts("html")) {
-            res.render("showpage.ejs", { pages, course, chapter, page, nextIndex, _csrf: req.csrfToken(), isMarked });
+            res.render("showpage.ejs", {currUser:req.user, pages, course, chapter, page, nextIndex, _csrf: req.csrfToken(), isMarked });
         } else {
-            res.json({ pages, course, chapter, page, nextIndex, csrfToken: req.csrfToken(), isMarked });
+            res.json({ pages, course, chapter, page, nextIndex, _csrf: req.csrfToken(), isMarked });
         }
     }
     catch (err) {

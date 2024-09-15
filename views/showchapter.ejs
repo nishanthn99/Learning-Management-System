@@ -1,15 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapters</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
+<%-include('boilerplate') %>
 <body>
-    <%- include('header') %>
-    <div><%= course %></div>
-    <div><%= chapter %></div>
-    <%- include('footer') %>
+    <%-include('header') %>
+    <h3 class="text-xl p-2 font-semibold"><%=course.coursetitle%></h3>
+    <hr class="border-gray-400"/>
+    <div class="flex flex-wrap justify-between">
+      <div class="w-1/2 mt-4 ml-4">
+        <h4 class="text-lg font-semibold">Chapters</h4>
+        <%if(currUser && currUser.role=='Educator' &&
+        currUser.id==course.educatorId){%>
+        <form action="/course/<%=course.id%>/chapter/createchapter" method="get">
+          <button class="bg-yellow-500 text-white px-4 py-2 mt-2 rounded-lg hover:bg-yellow-600">Add Chapter</button>
+        </form>
+        <%}%>
+      </div>
+    
+      <!-- Enroll card -->
+      <% if(enrolled && !enrolled.length && currUser.id!=course.educatorId){%>
+      <div class="w-64 ml-3 bg-white shadow-md rounded-lg p-4">
+        <div class="card-body">
+          <h5 class="text-lg font-semibold mb-2"><%=course.CourseName%></h5>
+          <hr class="border-gray-300" />
+          <div class="flex justify-between items-center mt-2">
+            <div class="text-lg font-medium">
+              <%if(course.User){%>
+              <p><%=course.User.firstname%></p>
+              <%}else{%>
+              <p>John Doe</p>
+              <%}%>
+            </div>
+            <div class="flex items-center">
+              <i class="fa-solid fa-users text-xl"></i>
+              <p class="ml-2 text-lg font-medium"><%= course.getDataValue('enrollmentCount')%></p>
+            </div>
+          </div>
+          <form action="/course/<%=course.id%>/enroll" method="post" class="mt-4">
+            <input type="hidden" name="_csrf" value="<%=_csrf%>" />
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Enroll</button>
+          </form>
+        </div>
+      </div>
+      <%}%>
+    </div>
+    <hr class="border-gray-300" />
+    
+    <div class="mt-4">
+      <% if(!chapters.length){ %>
+      <div class="bg-red-100 text-center text-lg font-medium text-red-600 p-4 rounded-lg" role="alert">
+        Chapters not Found!
+      </div>
+      <% } %> <% for(chapter of chapters) { %>
+      <div class="mx-auto w-1/2 mb-3">
+        <% if(enrolled && enrolled.length || currUser.id==course.EducatorId){%>
+        <div class="flex justify-between items-center border border-gray-300 p-3 rounded-lg">
+          <a href="/courses/<%=course.id%>/chapters/<%=chapter.id%>/Pages" class="text-black no-underline">
+            <div class="text-lg font-medium"><%= chapter.chaptertitle %></div>
+          </a>
+          <%if(currUser && currUser.role=='Educator' &&
+          currUser.id==course.educatorId){%>
+          <div class="flex space-x-2">
+            <form action="/course/<%=course.id%>/chapter/<%=chapter.id%>/edit" method="get">
+              <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">Edit</button>
+            </form>
+            <form action="/course/<%=course.id%>/chapter/<%=chapter.id%>?_method=DELETE" method="post">
+              <input type="hidden" name="_csrf" value="<%=csrfToken%>" />
+              <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Delete</button>
+            </form>
+          </div>
+          <%}%>
+        </div>
+        <% }else{ %>
+        <div class="border border-gray-300 p-3 rounded-lg text-lg font-medium">
+          <%= chapter.chaptertitle %>
+        </div>
+        <% } %>
+      </div>
+      <% if(enrolled && !enrolled.length && !(currUser.id==course.educatorId) ){%>
+      <div class="flex justify-center items-center text-gray-500">
+        <i class="fa-solid fa-lock text-xl"></i>
+      </div>
+      <% } %> <% } %>
+    </div>    
 </body>
 </html>
