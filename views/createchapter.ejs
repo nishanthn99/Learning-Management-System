@@ -6,6 +6,7 @@
     <title>Create Chapter</title>
 </head>
 <body>
+    <%- include('header') %>
     <form action="/course/<%= id %>/chapter" method="post">
         <input type="hidden" name="_csrf" value="<%= _csrf %>">
         <div>
@@ -20,6 +21,7 @@
             <input type="submit" value="Create Chapter" class="p-3 bg-green-500 rounded hover:bg-green-700">
         </div>
     </form>
+    <%- include('footer') %>
 </body>
 
 </html>

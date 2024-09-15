@@ -62,3 +62,47 @@ module.exports.getAllChapter = async (req, res) => {
     }
 };
 
+module.exports.getEditChapter = async (req, res) => {
+    let courseId = req.params.CourseId;
+    let chapterId = req.params.ChapterId;
+    try {
+        let course = await Course.findByPk(courseId);
+        let chapter = await Chapter.findByPk(chapterId);
+        res.render("editchapter.ejs", { course, chapter, csrfToken: req.csrfToken() });
+    } catch (err) {
+        console.log(err);
+    }
+};
+module.exports.updateChapter = async (req, res) => {
+    let courseId = req.params.courseid;
+    let chapterId = req.params.chapterid;
+    try {
+        await Chapter.update({chaptertitle:req.body.title,description:req.body.desc}, {
+            where: {
+                id: chapterId,
+            }
+        });
+        //req.flash("success", "Chapter Updated Succesfully!!");
+        res.redirect(`/course/${courseId}/chapter`);
+    }
+    catch (err) {
+        res.status(500).send("Internal Server Error");
+    }
+
+};
+module.exports.deleteChapter = async (req, res) => {
+    let courseId = req.params.courseId;
+    let chapterId = req.params.chapterId;
+    try {
+        await Chapter.destroy({
+            where: {
+                id: chapterId,
+            }
+        });
+        //req.flash("success", "Chapter Deleted!!");
+        res.redirect(`/course/${courseId}/chapter`);
+    }
+    catch (err) {
+        res.status(500).send("Internal Server Error");
+    }
+};
