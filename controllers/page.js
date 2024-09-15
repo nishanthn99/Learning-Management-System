@@ -67,6 +67,71 @@ module.exports.updatePage = async (req, res) => {
     }
 };
 
+module.exports.getPages = async (req, res) => {
+    try {
+        let userId = req.user.id;
+        let courseId = req.params.courseid;
+        let course = await Course.findByPk(courseId);
+        let chapter = await Chapter.findByPk(chapterId);
+        let page = await Page.findOne({
+            where: {
+                courseId: courseId,
+            }, limit: 1,
+            order: [['id', 'ASC']],
+        });
+        let Pages = await Page.findAll({
+            where: {
+                courseId: courseId,
+            },
+            order: [['id']]
+        });
+        let nextIndex = (Pages.findIndex((p) => p.id === page.id)) + 1;
+        if (nextIndex == Pages.length) {
+            nextIndex = 0;
+        }
+        const isMarked = await Progress.MarkedAsComplete(userId, page.id);
+        if (req.accepts("html")) {
+            res.render("showpage.ejs", { Pages, course, chapter, page, nextIndex, csrfToken: req.csrfToken(), isMarked });
+        } else {
+            res.json({ Pages, course, chapter, page, nextIndex, csrfToken: req.csrfToken(), isMarked });
+        }
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+    }
+};
+
+module.exports.getParticularPage = async (req, res) => {
+    try {
+        let userId = req.user.id;
+        let courseId = req.params.CourseId;
+        console.log(courseId);
+        let chapterId = req.params.ChapterId;
+        let PageId = req.params.PageId;
+        let course = await Course.findByPk(courseId);
+        let chapter = await Chapter.findByPk(chapterId);
+        let page = await Page.findOne({ where: { id: PageId } });
+        let Pages = await Page.findAll({
+            where: {
+                ChapterID: chapterId,
+            },
+            order: [['id']]
+        });
+        let nextIndex = (Pages.findIndex((p) => p.id === page.id)) + 1;
+        if (nextIndex == Pages.length) {
+            nextIndex = 0;
+        }
+        const isMarked = await Progress.MarkedAsComplete(userId, PageId);
+        res.render("showpage.ejs", { Pages, course, chapter, page, nextIndex, csrfToken: req.csrfToken(), isMarked });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+        
+    }
+};
+
 module.exports.getEditPage = async (req, res) => {
     try {
         let courseId = req.params.courseid;

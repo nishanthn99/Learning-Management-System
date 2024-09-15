@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+    <%layout("./layouts/boilerplate.ejs")-%>
+<div class="grid grid-cols-12 gap-4">
+  <div class="col-span-6">
+    <button
+      class="bg-yellow-500 text-white px-4 py-2 mt-3 rounded-lg hover:bg-yellow-600"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasWithBothOptions"
+      aria-controls="offcanvasWithBothOptions"
+    >
+      Click here for Pages &nbsp; <i class="fa-solid fa-hand-point-left"></i>
+    </button>
+  </div>
+  <div class="col-span-5">
+    <% if (currUser && currUser.role == 'Educator' && currUser.id == course.educatorId) { %>
+    <a
+      href="/courses/<%= course.id %>/chapters/<%= chapter.id %>/pages/new"
+      class="bg-blue-500 text-white px-4 py-2 mt-3 rounded-lg hover:bg-blue-600"
+    >
+      Add New Page
+    </a>
+    <% } %>
+  </div>
+</div>
+
+<!-- Offcanvas -->
+<div
+  class="fixed top-0 left-0 w-64 h-full bg-gray-200 transform -translate-x-full transition-transform duration-300 ease-in-out offcanvas-start"
+  data-bs-scroll="true"
+  tabindex="-1"
+  id="offcanvasWithBothOptions"
+  aria-labelledby="offcanvasWithBothOptionsLabel"
+>
+  <div class="flex items-center justify-between p-4 bg-blue-500 text-white">
+    <h4 class="text-xl font-semibold" id="offcanvasWithBothOptionsLabel">
+      <%= chapter.chaptertitle %>
+    </h4>
+    <button
+      type="button"
+      class="text-white"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    >
+      &times;
+    </button>
+  </div>
+  <div class="p-4">
+    <% for (p of Pages) { %>
+    <a href="/courses/<%= course.id %>/chapters/<%= chapter.id %>/Pages/<%= p.id %>" class="block text-gray-900 hover:text-blue-500 mb-2">
+      <div class="border border-gray-300 p-3 text-base font-medium">
+        <%= p.pagetitle %>
+      </div>
+    </a>
+    <% } %>
+  </div>
+</div>
+
+<!-- Showing page -->
+<div class="mt-6">
+  <% if (!page) { %>
+  <div class="text-center text-red-500 w-1/2 h-1/2 mt-6 p-6">
+    <h4>Pages not Found!</h4>
+  </div>
+  <% } else { %>
+  <div class="mt-8 grid grid-cols-12 gap-4">
+    <div class="col-span-9">
+      <h3 class="text-xl font-bold"><%= page.pagetitle %></h3>
+    </div>
+    <div class="col-span-3 flex space-x-4">
+      <% if (currUser && currUser.role == 'Educator' && currUser.id == course.educatorId) { %>
+      <form action="/courses/<%= course.id %>/chapters/<%= chapter.id %>/Pages/<%= page.id %>/edit" method="get">
+        <button class="bg-yellow-500 text-white px-3 py-2 rounded-lg hover:bg-yellow-600">Edit</button>
+      </form>
+      <form action="/courses/<%= course.id %>/chapters/<%= chapter.id %>/Pages/<%= page.id %>?_method=DELETE" method="post">
+        <button class="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600">Delete</button>
+      </form>
+      <% } %>
+    </div>
+    <hr class="col-span-12 my-4 border-gray-300" />
+    <div class="col-span-12 text-base">
+      <%- page.Content %>
+    </div>
+    <hr class="col-span-12 my-4 border-gray-300" />
+
+    <div class="grid grid-cols-12 gap-4">
+      <div class="col-span-5 col-start-2">
+        <% if (currUser.id != course.educatorId) { %>
+        <% if (!isMarked) { %>
+        <form action="/courses/<%= course.id %>/chapters/<%= chapter.id %>/Pages/<%= page.id %>" method="post">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Mark As Complete</button>
+        </form>
+        <% } else { %>
+        <button class="bg-transparent border border-green-500 text-green-500 px-4 py-2 rounded-lg" disabled>
+          Marked As Completed
+        </button>
+        <% } %>
+        <% } %>
+      </div>
+      <div class="col-span-5">
+        <form action="/courses/<%= course.id %>/Pages/<%= Pages[nextIndex].id %>" method="get">
+          <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Next</button>
+        </form>
+      </div>
+    </div>
+    <hr class="col-span-12 my-4 border-gray-300" />
+  </div>
+  <% } %>
+</div>
+</body>
+</html>
