@@ -76,25 +76,25 @@ module.exports.getPages = async (req, res) => {
         let chapter = await Chapter.findByPk(chapterId);
         let page = await Page.findOne({
             where: {
-                ChapterID: chapterId,
+                chapterId,
             }, limit: 1,
             order: [['id', 'ASC']],
         });
-        let Pages = await Page.findAll({
+        let pages = await Page.findAll({
             where: {
-                ChapterID: chapterId,
+                chapterId,
             },
             order: [['id']]
         });
-        let nextIndex = (Pages.findIndex((p) => p.id === page.id)) + 1;
-        if (nextIndex == Pages.length) {
+        let nextIndex = (pages.findIndex((p) => p.id === page.id)) + 1;
+        if (nextIndex == pages.length) {
             nextIndex = 0;
         }
         const isMarked = await Progress.MarkedAsComplete(userId, page.id);
         if (req.accepts("html")) {
-            res.render("pages/show.ejs", { Pages, course, chapter, page, nextIndex, csrfToken: req.csrfToken(), isMarked });
+            res.render("pages/show.ejs", { pages, course, chapter, page, nextIndex, _csrf: req.csrfToken(), isMarked });
         } else {
-            res.json({ Pages, course, chapter, page, nextIndex, csrfToken: req.csrfToken(), isMarked });
+            res.json({ pages, course, chapter, page, nextIndex, csrfToken: req.csrfToken(), isMarked });
         }
     }
     catch (err) {
