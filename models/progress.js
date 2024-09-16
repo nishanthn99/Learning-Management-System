@@ -21,8 +21,8 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "PageId",
       });
     }
-    static async MarkedAsComplete(userId, PageId) {
-      let pro = await Progress.findOne({ where: { StudentID: userId, PageID: PageId } });
+    static async MarkedAsComplete(userId, pageId) {
+      let pro = await Progress.findOne({ where: { studentId: userId, pageId} });
       if (pro) {
         return pro.IsComplete;
       } else {
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     }
     static async getCompletionProgress(models,userId, courseId) {
       const totalPagesInCourse = await models.Page.getPagesInCourse(courseId);
-      const completedPages = await Progress.findAll({ where: { StudentID: userId, CourseID: courseId } });
+      const completedPages = await Progress.findAll({ where: { studentId: userId, courseId } });
       let status;
       if (totalPagesInCourse > 0) {
         status = Math.floor((completedPages.length / totalPagesInCourse) * 100);

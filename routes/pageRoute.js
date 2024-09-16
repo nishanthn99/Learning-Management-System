@@ -7,11 +7,11 @@ const {isEducator,isOwner,isOwnerOrEnrolled}=require('../middleware');
 router.get('/createpage',EnsureLogin.ensureLoggedIn(),pageController.getNewPage);
 router.get('/',EnsureLogin.ensureLoggedIn(),isOwnerOrEnrolled,pageController.getPages);
 
-router.get("/:PageId",EnsureLogin.ensureLoggedIn(),isOwnerOrEnrolled,pageController.getParticularPage);
+router.get("/:pageid",EnsureLogin.ensureLoggedIn(),isOwnerOrEnrolled,pageController.getParticularPage);
 router.post('/',EnsureLogin.ensureLoggedIn(),isEducator,isOwner,pageController.postNewPage);
-router.get("/:PageId/edit",EnsureLogin.ensureLoggedIn(),pageController.getEditPage);
-router.put("/:PageId",EnsureLogin.ensureLoggedIn(),isOwner, pageController.updatePage);
-router.delete("/:PageId",EnsureLogin.ensureLoggedIn(),isOwner,pageController.deletePage);
+router.get("/:pageid/editpage",EnsureLogin.ensureLoggedIn(),pageController.getEditPage);
+router.put("/:pageid",EnsureLogin.ensureLoggedIn(),isOwner, pageController.updatePage);
+router.delete("/:pageid",EnsureLogin.ensureLoggedIn(),isOwner,pageController.deletePage);
 //markAsComplete
 router.post("/:pageId", EnsureLogin.ensureLoggedIn(),pageController.markAsComplete);
 

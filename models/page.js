@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         chapterId:chapterId
         });
     }
+    static async getPagesInCourse(courseId) {
+      const pages = await Page.findAll({ where: { courseId } });
+      return pages.length;
+    }
   }
   Page.init({
     pagetitle: DataTypes.STRING,

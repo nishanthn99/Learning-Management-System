@@ -53,7 +53,7 @@
       <div class="mx-auto w-1/2 mb-3">
         <% if(enrolled && enrolled.length || currUser.id==course.educatorId){%>
         <div class="flex justify-between items-center border border-gray-300 p-3 rounded-lg">
-          <a href="/courses/<%=course.id%>/chapters/<%=chapter.id%>/Pages" class="text-black no-underline">
+          <a href="/course/<%=course.id%>/chapter/<%=chapter.id%>/page" class="text-black no-underline">
             <div class="text-lg font-medium"><%= chapter.chaptertitle %></div>
           </a>
           <%if(currUser && currUser.role=='Educator' &&
@@ -62,7 +62,7 @@
             <form action="/course/<%=course.id%>/chapter/<%=chapter.id%>/edit" method="get">
               <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">Edit</button>
             </form>
-            <form action="/course/<%=course.id%>/chapter/<%=chapter.id%>?_method=DELETE" method="post">
+            <form action="/course/<%=course.id%>/chapter/<%=chapter.id%>/deletechapter" method="post">
               <input type="hidden" name="_csrf" value="<%=_csrf%>" />
               <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Delete</button>
             </form>

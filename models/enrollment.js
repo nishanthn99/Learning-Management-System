@@ -16,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
       Enrollment.belongsTo(models.Course, { foreignKey: 'courseId' });
       Enrollment.belongsTo(models.User, { foreignKey: 'userId' });
     }
+    static async getEnrollmentCount(courseId) {
+      return await Enrollment.count({ where: { courseId } });
+    }
+    static async getTotalEnrollments(educatorId) {
+      return await Enrollment.count({ where: { educatorId },distinct: true });
+    }
   }
   Enrollment.init({
     courseId: DataTypes.INTEGER,

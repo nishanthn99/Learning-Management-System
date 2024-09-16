@@ -72,7 +72,7 @@ module.exports.getEditChapter = async (req, res) => {
     try {
         let course = await Course.findByPk(courseId);
         let chapter = await Chapter.findByPk(chapterId);
-        res.render("editchapter.ejs", { course, chapter, csrfToken: req.csrfToken() });
+        res.render("editchapter.ejs", { course, chapter, _csrf: req.csrfToken() });
     } catch (err) {
         console.log(err);
     }
