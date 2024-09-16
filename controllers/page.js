@@ -27,6 +27,7 @@ module.exports.deletePage = async (req, res) => {
     let courseId = req.params.courseid;
     let chapterId=req.params.chapterid;
     let pageId = req.params.pageid;
+    console.log(req.params.courseid,req.params.chapterid)
     try {
         await Page.destroy({
             where: {
@@ -75,32 +76,72 @@ module.exports.getPages = async (req, res) => {
         let userId = req.user.id;
         let courseId = req.params.courseid;
         let chapterId = req.params.chapterid;
+
+        // Fetch course and chapter
         let course = await Course.findByPk(courseId);
         let chapter = await Chapter.findByPk(chapterId);
+
+        // Check if course and chapter exist
+        if (!course) {
+            return res.status(404).send("Course not found");
+        }
+        if (!chapter) {
+            return res.status(404).send("Chapter not found");
+        }
+
+        // Fetch the first page of the chapter
         const page = await Page.findOne({
-            where: {
-                chapterId,
-            }, limit: 1,
+            where: { chapterId },
+            limit: 1,
             order: [['id', 'ASC']],
         });
+
+        // Check if page exists
+        if (!page) {
+            console.log(`No pages found for chapterId: ${chapterId}`);
+            return res.status(404).send("Page not found");
+        }
+
+        // Fetch all pages in the chapter
         let pages = await Page.findAll({
-            where: {
-                chapterId,
-            },
-            order: [['id','ASC']]
+            where: { chapterId },
+            order: [['id', 'ASC']],
         });
+
+        // Find next page index
         let nextIndex = (pages.findIndex((p) => p.id === page.id)) + 1;
         if (nextIndex == pages.length) {
             nextIndex = 0;
         }
+
+        // Check if the user has marked the page as completed
         const isMarked = await Progress.MarkedAsComplete(userId, page.id);
+
+        // Return HTML or JSON based on the request
         if (req.accepts("html")) {
-            res.render("showpage.ejs", {currUser:req.user, pages, course, chapter, page, nextIndex, _csrf: req.csrfToken(), isMarked ,title:chapter.chaptertitle});
+            res.render("showpage.ejs", {
+                currUser: req.user,
+                pages,
+                course,
+                chapter,
+                page,
+                nextIndex,
+                _csrf: req.csrfToken(),
+                isMarked,
+                title: chapter.chaptertitle,
+            });
         } else {
-            res.json({ pages, course, chapter, page, nextIndex, _csrf: req.csrfToken(), isMarked });
+            res.json({
+                pages,
+                course,
+                chapter,
+                page,
+                nextIndex,
+                _csrf: req.csrfToken(),
+                isMarked,
+            });
         }
-    }
-    catch (err) {
+    } catch (err) {
         console.log(err);
         res.status(500).send("Internal Server Error");
     }

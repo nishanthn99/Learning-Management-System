@@ -9,6 +9,6 @@ router.get('/',chapterController.getAllChapter);
 router.post('/',EnsureLogin.ensureLoggedIn(),chapterController.postNewChapter);
 router.get("/:chapterid/editchapter",EnsureLogin.ensureLoggedIn(),chapterController.getEditChapter);
 router.post("/:chapterid/updatechapter",EnsureLogin.ensureLoggedIn(),isOwner,chapterController.updateChapter);
-router.delete("/:chapterid/deletechapter", EnsureLogin.ensureLoggedIn(),isOwner,chapterController.deleteChapter);
+router.post("/:chapterid/deletechapter", EnsureLogin.ensureLoggedIn(),isOwner,chapterController.deleteChapter);
 
 module.exports=router

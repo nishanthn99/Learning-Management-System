@@ -62,7 +62,7 @@
             <form action="/course/<%=course.id%>/chapter/<%=chapter.id%>/editchapter" method="get">
               <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">Edit</button>
             </form>
-            <form action="/course/<%=course.id%>/chapter/<%=chapter.id%>/deletechapter" method="delete">
+            <form action="/course/<%=course.id%>/chapter/<%=chapter.id%>/deletechapter" method="post">
               <input type="hidden" name="_csrf" value="<%=_csrf%>" />
               <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Delete</button>
             </form>

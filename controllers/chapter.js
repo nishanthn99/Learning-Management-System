@@ -94,6 +94,7 @@ module.exports.updateChapter = async (req, res) => {
     }
 
 };
+
 module.exports.deleteChapter = async (req, res) => {
     let courseId = req.params.courseid;
     let chapterId = req.params.chapterid;
