@@ -7,8 +7,8 @@ module.exports.getCreateCourse=(req,res)=>{
 module.exports.postNewCourse=async(req,res)=>{
     const id=JSON.parse(req.user.id);
     try{
-        await Course.addCourse(req.body.title,id);
-        res.redirect(`course/${id}/chapter/createchapter`);
+        const course=await Course.addCourse(req.body.title,id);
+        res.redirect(`course/${course.id}/chapter/createchapter`);
     }
     catch(err){
         console.log(err);

@@ -25,6 +25,7 @@ module.exports.postNewPage=async(req,res)=>{
 }
 module.exports.deletePage = async (req, res) => {
     let courseId = req.params.courseid;
+    let chapterId=req.params.chapterid;
     let pageId = req.params.pageid;
     try {
         await Page.destroy({
@@ -32,7 +33,7 @@ module.exports.deletePage = async (req, res) => {
                 id: pageId,
             }
         });
-        res.redirect(`/course/${courseId}/page`);
+        res.redirect(`/course/${courseId}/chapter/${chapterId}/page`);
     }
     catch (err) {
         res.status(500).send("Internal Server Error");
@@ -53,6 +54,7 @@ module.exports.markAsComplete = async (req, res) => {
 };
 module.exports.updatePage = async (req, res) => {
     let courseId = req.params.courseid;
+    let chapterId=req.params.chapterid;
     let pageId = req.params.pageid;
     try {
         await Page.update({ ...req.body }, {
@@ -61,7 +63,7 @@ module.exports.updatePage = async (req, res) => {
             }
         });
         //req.flash("success", "Page Updated Successfully!!");
-        res.redirect(`/courses/${courseId}/page`);
+        res.redirect(`/course/${courseId}/chapter/${chapterId}/page`);
     }
     catch (err) {
         res.status(500).send("Internal Server Error");
@@ -81,12 +83,11 @@ module.exports.getPages = async (req, res) => {
             }, limit: 1,
             order: [['id', 'ASC']],
         });
-        console.log(page);
         let pages = await Page.findAll({
             where: {
                 chapterId,
             },
-            order: [['id']]
+            order: [['id','ASC']]
         });
         let nextIndex = (pages.findIndex((p) => p.id === page.id)) + 1;
         if (nextIndex == pages.length) {
@@ -94,7 +95,7 @@ module.exports.getPages = async (req, res) => {
         }
         const isMarked = await Progress.MarkedAsComplete(userId, page.id);
         if (req.accepts("html")) {
-            res.render("showpage.ejs", {currUser:req.user, pages, course, chapter, page, nextIndex, _csrf: req.csrfToken(), isMarked });
+            res.render("showpage.ejs", {currUser:req.user, pages, course, chapter, page, nextIndex, _csrf: req.csrfToken(), isMarked ,title:chapter.chaptertitle});
         } else {
             res.json({ pages, course, chapter, page, nextIndex, _csrf: req.csrfToken(), isMarked });
         }
@@ -108,25 +109,24 @@ module.exports.getPages = async (req, res) => {
 module.exports.getParticularPage = async (req, res) => {
     try {
         let userId = req.user.id;
-        let courseId = req.params.CourseId;
-        console.log(courseId);
-        let chapterId = req.params.ChapterId;
-        let PageId = req.params.PageId;
+        let courseId = req.params.courseid;
+        let chapterId = req.params.chapterid;
+        let PageId = req.params.pageid;
         let course = await Course.findByPk(courseId);
         let chapter = await Chapter.findByPk(chapterId);
         let page = await Page.findOne({ where: { id: PageId } });
-        let Pages = await Page.findAll({
+        let pages = await Page.findAll({
             where: {
-                ChapterID: chapterId,
+                chapterId,
             },
             order: [['id']]
         });
-        let nextIndex = (Pages.findIndex((p) => p.id === page.id)) + 1;
-        if (nextIndex == Pages.length) {
+        let nextIndex = (pages.findIndex((p) => p.id === page.id)) + 1;
+        if (nextIndex == pages.length) {
             nextIndex = 0;
         }
         const isMarked = await Progress.MarkedAsComplete(userId, PageId);
-        res.render("showpage.ejs", { Pages, course, chapter, page, nextIndex, csrfToken: req.csrfToken(), isMarked });
+        res.render("showpage.ejs", { currUser:req.user,pages, course, chapter, page, nextIndex, _csrf: req.csrfToken(), isMarked ,title:chapter.chaptertitle});
     }
     catch (err) {
         console.log(err);
@@ -143,7 +143,7 @@ module.exports.getEditPage = async (req, res) => {
         let course = await Course.findByPk(courseId);
         let chapter = await Chapter.findByPk(chapterId);
         let page = await Page.findByPk(pageId);
-        res.render("editpage.ejs", { course, chapter, page, csrfToken: req.csrfToken() });
+        res.render("editpage.ejs", { course, chapter, page, _csrf: req.csrfToken() });
     }
     catch (err) {
         res.status(500).send("Internal Server Error");

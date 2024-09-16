@@ -13,7 +13,7 @@
           <h4 class="text-xl font-bold"><%=course.coursetitle%> &gt; Edit Chapter Details</h4>
           <hr class="my-4 border-gray-300" />
           <form
-            action="/course/<%=course.id%>/chapter/<%=chapter.id%>?_method=PUT"
+            action="/course/<%=course.id%>/chapter/<%=chapter.id%>/updatechapter"
             method="post"
           >
             <input type="hidden" name="_csrf" value="<%=_csrf%>" />

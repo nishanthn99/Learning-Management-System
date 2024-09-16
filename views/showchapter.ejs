@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <%-include('boilerplate') %>
-<body class="relative">
+<body>
     <%-include('header') %>
     <h3 class="text-xl p-2 font-semibold"><%=course.coursetitle%></h3>
     <hr class="border-gray-400"/>
@@ -59,10 +59,10 @@
           <%if(currUser && currUser.role=='Educator' &&
           currUser.id==course.educatorId){%>
           <div class="flex space-x-2">
-            <form action="/course/<%=course.id%>/chapter/<%=chapter.id%>/edit" method="get">
+            <form action="/course/<%=course.id%>/chapter/<%=chapter.id%>/editchapter" method="get">
               <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">Edit</button>
             </form>
-            <form action="/course/<%=course.id%>/chapter/<%=chapter.id%>/deletechapter" method="post">
+            <form action="/course/<%=course.id%>/chapter/<%=chapter.id%>/deletechapter" method="delete">
               <input type="hidden" name="_csrf" value="<%=_csrf%>" />
               <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Delete</button>
             </form>

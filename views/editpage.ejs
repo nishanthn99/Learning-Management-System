@@ -10,17 +10,17 @@
 </head>
 <body>
     <div class="grid grid-cols-12 mt-3 ml-4">
-        <h3 class="col-span-12 text-xl font-bold"><%=course.CourseName%></h3>
-        <h4 class="col-span-12 text-lg font-semibold mt-1"><%=chapter.ChapterName%></h4>
+        <h3 class="col-span-12 text-xl font-bold"><%=course.coursetitle%></h3>
+        <h4 class="col-span-12 text-lg font-semibold mt-1"><%=chapter.chaptertitle%></h4>
         <hr class="col-span-12 my-2 border-gray-300" />
         
         <div class="col-span-12">
           <form
-            action="/courses/<%=course.id%>/chapters/<%=chapter.id%>/Pages/<%=page.id%>?_method=PUT"
+            action="/course/<%=course.id%>/chapter/<%=chapter.id%>/page/<%=page.id%>/updatepage"
             method="post"
             class="space-y-4"
           >
-            <input type="hidden" name="_csrf" value="<%=csrfToken%>" />
+            <input type="hidden" name="_csrf" value="<%=_csrf%>" />
       
             <!-- Title Input -->
             <div class="mt-2">
@@ -28,7 +28,7 @@
               <input
                 type="text"
                 name="PageName"
-                value="<%=page.PageName%>"
+                value="<%=page.pagetitle%>"
                 class="block w-full p-2 border border-gray-300 rounded-lg text-base"
               />
             </div>
@@ -37,7 +37,7 @@
             <div class="mt-2">
               <label for="Content" class="block text-lg font-medium mb-1">Content</label>
               <div id="editor" class="border border-gray-300 rounded-lg p-2 h-72">
-                <%- page.Content %>
+                <%- page.content %>
               </div>
               <input type="hidden" id="editorInput" name="Content" />
             </div>

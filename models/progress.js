@@ -12,19 +12,19 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Progress.belongsTo(models.User, {
-        foreignKey: "StudentId",
+        foreignKey: "studentId",
       });
       Progress.belongsTo(models.Course, {
-        foreignKey: "CourseId",
+        foreignKey: "courseId",
       });
       Progress.belongsTo(models.Page, {
-        foreignKey: "PageId",
+        foreignKey: "pageId",
       });
     }
     static async MarkedAsComplete(userId, pageId) {
-      let pro = await Progress.findOne({ where: { studentId: userId, pageId} });
+      let pro = await Progress.findOne({ where: {studentId:userId, pageId} });
       if (pro) {
-        return pro.IsComplete;
+        return pro.markAsCompleted;
       } else {
         return false;
       }

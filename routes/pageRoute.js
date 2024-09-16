@@ -10,10 +10,10 @@ router.get('/',EnsureLogin.ensureLoggedIn(),isOwnerOrEnrolled,pageController.get
 router.get("/:pageid",EnsureLogin.ensureLoggedIn(),isOwnerOrEnrolled,pageController.getParticularPage);
 router.post('/',EnsureLogin.ensureLoggedIn(),isEducator,isOwner,pageController.postNewPage);
 router.get("/:pageid/editpage",EnsureLogin.ensureLoggedIn(),pageController.getEditPage);
-router.put("/:pageid",EnsureLogin.ensureLoggedIn(),isOwner, pageController.updatePage);
-router.delete("/:pageid",EnsureLogin.ensureLoggedIn(),isOwner,pageController.deletePage);
+router.post("/:pageid/updatepage",EnsureLogin.ensureLoggedIn(),isOwner, pageController.updatePage);
+router.delete("/:pageid/deletepage",EnsureLogin.ensureLoggedIn(),isOwner,pageController.deletePage);
 //markAsComplete
-router.post("/:pageId", EnsureLogin.ensureLoggedIn(),pageController.markAsComplete);
+router.post("/:pageid", EnsureLogin.ensureLoggedIn(),pageController.markAsComplete);
 
 
 
