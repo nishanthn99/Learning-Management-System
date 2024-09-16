@@ -50,9 +50,13 @@ module.exports.getAllChapter = async (req, res) => {
         // Fetch all chapters for the given course
         let chapters = await Chapter.findAll({ where: { courseId: courseId }, order: [['id']] });
 
+        const user=await User.findOne({
+            where:{id:req.user.id},
+        })
+
         // Render or respond based on the request format
         if (req.accepts("html")) {
-            res.render("showchapter.ejs", {currUser:req.user, course, chapters, _csrf: req.csrfToken() });
+            res.render("showchapter.ejs", {currUser:req.user, user,course, chapters, _csrf: req.csrfToken() ,title:course.coursetitle});
         } else {
             res.json({ chapters });
         }
@@ -63,8 +67,8 @@ module.exports.getAllChapter = async (req, res) => {
 };
 
 module.exports.getEditChapter = async (req, res) => {
-    let courseId = req.params.CourseId;
-    let chapterId = req.params.ChapterId;
+    let courseId = req.params.courseid;
+    let chapterId = req.params.chapterid;
     try {
         let course = await Course.findByPk(courseId);
         let chapter = await Chapter.findByPk(chapterId);
@@ -91,8 +95,8 @@ module.exports.updateChapter = async (req, res) => {
 
 };
 module.exports.deleteChapter = async (req, res) => {
-    let courseId = req.params.courseId;
-    let chapterId = req.params.chapterId;
+    let courseId = req.params.courseid;
+    let chapterId = req.params.chapterid;
     try {
         await Chapter.destroy({
             where: {

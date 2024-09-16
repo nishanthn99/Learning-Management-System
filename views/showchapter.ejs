@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <%-include('boilerplate') %>
-<body>
+<body class="relative">
     <%-include('header') %>
     <h3 class="text-xl p-2 font-semibold"><%=course.coursetitle%></h3>
     <hr class="border-gray-400"/>
@@ -20,18 +20,17 @@
       <% if(enrolled && !enrolled.length && currUser.id!=course.educatorId){%>
       <div class="w-64 ml-3 bg-white shadow-md rounded-lg p-4">
         <div class="card-body">
-          <h5 class="text-lg font-semibold mb-2"><%=course.CourseName%></h5>
+          <h5 class="text-lg font-semibold mb-2"><%=course.coursetitle%></h5>
           <hr class="border-gray-300" />
           <div class="flex justify-between items-center mt-2">
             <div class="text-lg font-medium">
-              <%if(course.User){%>
-              <p><%=course.User.firstname%></p>
+              <%if(course.educatorId==user.id){%>
+              <p><%=user.firstname%></p>
               <%}else{%>
               <p>John Doe</p>
               <%}%>
             </div>
             <div class="flex items-center">
-              <i class="fa-solid fa-users text-xl"></i>
               <p class="ml-2 text-lg font-medium"><%= course.getDataValue('enrollmentCount')%></p>
             </div>
           </div>
@@ -52,7 +51,7 @@
       </div>
       <% } %> <% for(chapter of chapters) { %>
       <div class="mx-auto w-1/2 mb-3">
-        <% if(enrolled && enrolled.length || currUser.id==course.EducatorId){%>
+        <% if(enrolled && enrolled.length || currUser.id==course.educatorId){%>
         <div class="flex justify-between items-center border border-gray-300 p-3 rounded-lg">
           <a href="/courses/<%=course.id%>/chapters/<%=chapter.id%>/Pages" class="text-black no-underline">
             <div class="text-lg font-medium"><%= chapter.chaptertitle %></div>
@@ -64,7 +63,7 @@
               <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">Edit</button>
             </form>
             <form action="/course/<%=course.id%>/chapter/<%=chapter.id%>?_method=DELETE" method="post">
-              <input type="hidden" name="_csrf" value="<%=csrfToken%>" />
+              <input type="hidden" name="_csrf" value="<%=_csrf%>" />
               <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Delete</button>
             </form>
           </div>
@@ -81,6 +80,7 @@
         <i class="fa-solid fa-lock text-xl"></i>
       </div>
       <% } %> <% } %>
-    </div>    
+    </div> 
+    <%-include('footer')%>   
 </body>
 </html>
