@@ -1,5 +1,6 @@
-const {User,Course,Enrollment}=require('../models');
+const {User,Course,Enrollment,Progress}=require('../models');
 const Sequelize=require('sequelize');
+const db = require("../models");
 
 module.exports.postUsers=async (req,res)=>{
     const { firstName, lastName, email, password, role } = req.body;
@@ -9,11 +10,7 @@ module.exports.postUsers=async (req,res)=>{
             if (err) {
                 console.log(err);
             }
-            if(role=="Educator"){
-            res.redirect('/dashboard-edu')}
-            else{
-                res.redirect('/dashboard-stu')
-                }
+            res.redirect('dashboard')
         })
         console.log(`inserted with id${user.id}`)
     }
@@ -41,12 +38,7 @@ module.exports.showForgotpasswaord=(req,res)=>{
 }
 
 module.exports.postSession=(req,res)=>{
-    if (req.user.role == 'Educator') {
-        res.redirect('/dashboard-edu');
-    }
-    else {
-        res.redirect('/dashboard-stu');
-    }
+    res.redirect('dashboard')
 }
 
 module.exports.logout=(req,res)=>{
@@ -70,7 +62,8 @@ module.exports.resetPassword=async(req, res) => {
     }
 }
 
-module.exports.getEduDashboard=async(req, res) => {
+module.exports.Dashboard=async(req, res) => {
+    const userId=req.user.id;
     let courses = await Course.findAll({
         attributes: [
             'id',
@@ -93,5 +86,34 @@ module.exports.getEduDashboard=async(req, res) => {
         group: ['Course.id', 'User.id'],
         subQuery: false,
     });    
-    res.render('dashboard-edu', { title: "Welcome to Your Learning Management System Dashboard",role:"Educator",courses})
-  }
+    let enrolledCourses = await Enrollment.findAll({
+        where: {
+            userId,
+        }
+    });
+    const courseIds = enrolledCourses.map(enrollment => enrollment.courseId);
+    let userCourses = courses.filter((course) => {
+        return courseIds.includes(course.id)
+    });
+    userCourses = await Promise.all(userCourses.map(async (course) => {
+        course.progress = 0; // Assuming progress is initially set to 0
+        const progress = await Progress.getCompletionProgress(db, userId, course.id);
+        course.progress = progress;
+        return course;
+    }));
+    const myCourses = userCourses.map(course => {
+        return {
+            id: course.id,
+            coursetitle: course.coursetitle,
+            educatorId: course.educatorId,
+            enrollmentCount: course.getDataValue('enrollmentCount'),
+            user: course.getDataValue('User'),
+            progress: course.progress
+        };
+    });
+    if (req.accepts("html")) {
+        res.render("dashboard", { courses, userCourses, _csrf: req.csrfToken(),currUser:req.user });
+    } else {
+        res.json({ courses, myCourses, csrfToken: req.csrfToken() });
+    }
+};  

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Include Header -->
+    <%-include('header') %>
+
+    <!-- Administrative Actions for Educators -->
+    <% if (currUser && currUser.role == 'Educator') { %>
+    <div class="container mx-auto mt-6 p-4 bg-white shadow rounded-lg">
+        <h4 class="text-xl font-semibold mb-4">Administrative Actions</h4>
+        <p class="mb-4 text-gray-700">You are an Educator</p>
+        <a href="/course/createcourse" class="bg-yellow-500 text-white rounded py-2 px-4 mb-3 inline-block hover:bg-yellow-600">Create new course</a>
+        <div class="flex space-x-4 mt-3">
+            <a href="/course/<%= currUser.id %>/mycourse" class="bg-gray-500 text-white rounded py-2 px-4 hover:bg-gray-600">My Courses</a>
+            <a href="/course/<%= currUser.id %>/viewreport" class="bg-green-500 text-white rounded py-2 px-4 hover:bg-green-600">View Report</a>
+        </div>
+    </div>
+    <hr class="my-6 border-gray-300" />
+    <% } %>
+
+    <!-- Student Learning Journey -->
+    <% if (currUser && currUser.role == 'Student') { %>
+    <div class="container mx-auto mt-6 p-4">
+        <h4 class="text-xl font-semibold mb-4">Your Learning Journey</h4>
+        
+        <% if (userCourses.length == 0) { %>
+        <div class="bg-yellow-200 text-center text-lg font-medium py-4 rounded">
+            You are not currently enrolled in any courses!!
+        </div>
+        <% } %>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <% userCourses.forEach(course => { %>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h5 class="font-bold text-lg mb-2"><%= course.coursetitle %></h5>
+                <hr class="my-2" />
+                <div class="flex justify-between items-center mt-2">
+                    <div class="text-lg font-medium">
+                        <% if (course.User) { %>
+                        <p><%= course.User.firstname %></p>
+                        <% } else { %>
+                        <p>John Doe</p>
+                        <% } %>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-users text-lg"></i>
+                        <p class="ml-2 text-lg font-medium">
+                            <%= course.getDataValue('enrollmentCount') %>
+                        </p>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center mt-4">
+                    <a href="/course/<%= course.id %>/chapter" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
+                        Continue <i class="fas fa-play"></i>
+                    </a>
+                    <form action="#" method="post">
+                        <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+                        <button class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
+                            Completed <%= course.progress %>%
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+        <hr class="my-6 border-gray-300" />
+    </div>
+    <% } %>
+
+    <!-- Available Courses -->
+    <div class="container mx-auto mt-6 p-4">
+        <h4 class="text-xl font-semibold mb-4">Available Courses</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <% courses.forEach(course => { %>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h5 class="font-bold text-lg mb-2"><%= course.CourseName %></h5>
+                <hr class="my-2" />
+                <div class="flex justify-between items-center mt-2">
+                    <div class="text-lg font-medium">
+                        <% if (course.User) { %>
+                        <p><%= course.User.firstname %></p>
+                        <% } else { %>
+                        <p>John Doe</p>
+                        <% } %>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-users text-lg"></i>
+                        <p class="ml-2 text-lg font-medium">
+                            <%= course.getDataValue('enrollmentCount') %>
+                        </p>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center mt-4">
+                    <a href="/course/<%= course.id %>/chapter" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
+                        View Course
+                    </a>
+                    <form action="/course/<%= course.id %>/enroll" method="post">
+                        <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+                        <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Enroll</button>
+                    </form>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+    <!-- Footer -->
+    <%- include('footer') %>
+
+</body>
+</html>
