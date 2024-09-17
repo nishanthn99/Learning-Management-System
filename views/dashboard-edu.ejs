@@ -9,9 +9,8 @@
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 
-<body class="relative">
+<body>
     <%- include('header') %>
-    <div>
         <div class="p-6">
             <div class="text-2xl font-semibold text-black-800">
                 <%= title %>
@@ -32,9 +31,8 @@
                         Report</a></button>
             </div>
         </div>
-        <%-include('showallcourses') %>
-        </div>
-        <%- include('footer') %>
+        <div><%-include('showallcourses') %></div>
+        <footer class="relative bottom-0"><%- include('footer') %></footer>
 </body>
 
 </html>
