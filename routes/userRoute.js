@@ -22,9 +22,7 @@ router.get("/forgotpassword", userController.showForgotpasswaord);
 
 router.post("/resetpassword", userController.resetPassword);
 
-router.get('/dashboard-edu',ensureLogin.ensureLoggedIn(),(req, res) => {
-  res.render('dashboard-edu', { title: "Welcome to Your Learning Management System Dashboard",role:"Educator"})
-});
+router.get('/dashboard-edu',ensureLogin.ensureLoggedIn(),userController.getEduDashboard);
 
 router.get('/dashboard-stu', ensureLogin.ensureLoggedIn(), (req, res) => {
   res.render('dashboard-stu', { title: "Welcome to Your Learning Management System Dashboard",role:"Student"})

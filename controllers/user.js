@@ -1,4 +1,5 @@
-const {User}=require('../models');
+const {User,Course,Enrollment}=require('../models');
+const Sequelize=require('sequelize');
 
 module.exports.postUsers=async (req,res)=>{
     const { firstName, lastName, email, password, role } = req.body;
@@ -68,3 +69,29 @@ module.exports.resetPassword=async(req, res) => {
         console.log(err)
     }
 }
+
+module.exports.getEduDashboard=async(req, res) => {
+    let courses = await Course.findAll({
+        attributes: [
+            'id',
+            'coursetitle',
+            'educatorId',
+            [Sequelize.fn('COUNT', Sequelize.col('Enrollments.id')), 'enrollmentCount']
+        ],
+        include: [
+            {
+                model: User,
+                as: 'User', // Assuming an alias 'User' exists for Educator
+                attributes: ['firstname'],
+            },
+            {
+                model: Enrollment,
+                as: 'Enrollments',
+                attributes: [], // We just need to count Enrollments
+            },
+        ],
+        group: ['Course.id', 'User.id'],
+        subQuery: false,
+    });    
+    res.render('dashboard-edu', { title: "Welcome to Your Learning Management System Dashboard",role:"Educator",courses})
+  }

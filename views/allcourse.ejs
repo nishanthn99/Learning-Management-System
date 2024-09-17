@@ -1,12 +1,11 @@
-  <div class="course-card border rounded-lg p-4 shadow-md mb-4 w-72">
+<div class="course-card border rounded-lg p-4 shadow-md mb-4 w-72">
     <h3 class="text-xl font-bold mb-2"><%= course.coursetitle %></h3>
     <p class="text-gray-500 text-md mb-2"><%= course.educatorId %></p>
     
     <div class="flex items-center mb-2">
       <span class="mr-2">🎓</span>
-      <span class="text-gray-600 text-md"><%= userCourses %></span>
+      <span class="text-gray-600 text-md"><%=educator %></span>
     </div>
-  
     <div class="flex justify-between">
       <a href="/course/<%= course.id %>" class="btn bg-blue-400 text-white px-4 py-2 rounded-md">View Course</a>
       <a href="/course/enroll/<%= course.id%>" class="btn bg-green-500 text-white px-4 py-2 rounded-md">Enroll</a>
