@@ -64,7 +64,7 @@ module.exports.isOwnerOrEnrolled = async (req, res, next) => {
             const enrollment = await Enrollment.findOne({
                 where: {
                     userId,
-                    courseid
+                    courseId:courseid
                 },
             });
 
