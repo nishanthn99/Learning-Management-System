@@ -94,13 +94,7 @@ module.exports.getPages = async (req, res) => {
             where: { chapterId },
             limit: 1,
             order: [['id', 'ASC']],
-        });
-
-        // Check if page exists
-        if (!page) {
-            console.log(`No pages found for chapterId: ${chapterId}`);
-            return res.status(404).send("Page not found");
-        }
+        })
 
         // Fetch all pages in the chapter
         let pages = await Page.findAll({
@@ -112,6 +106,20 @@ module.exports.getPages = async (req, res) => {
         let nextIndex = (pages.findIndex((p) => p.id === page.id)) + 1;
         if (nextIndex == pages.length) {
             nextIndex = 0;
+        }
+        // Check if page exists
+        if (!page) {
+            console.log(`No pages found for chapterId: ${chapterId}`);
+            return res.render("showpage.ejs", {
+                currUser: req.user,
+                pages,
+                course,
+                chapter,
+                page,
+                nextIndex,
+                _csrf: req.csrfToken(),
+                title: "Page Not Found",
+            })
         }
 
         // Check if the user has marked the page as completed
