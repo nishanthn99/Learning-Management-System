@@ -42,8 +42,13 @@ module.exports.postSession=(req,res)=>{
 }
 
 module.exports.logout=(req,res)=>{
-    req.logout();
-    res.redirect('/login');
+    req.logout((err) => {
+        if (err) {
+            return next(err);
+        }
+        //req.flash("success", "You've been successfully signed out. Come back soon!");
+        res.redirect("/login");
+    });
 }
 
 module.exports.resetPassword=async(req, res) => {

@@ -11,7 +11,7 @@
 
     <!-- Include Header -->
     <%-include('header') %>
-
+    <div class="flex justify-end mr-4" ><a class="bg-red-600 text-white rounded-md border border-gray-300 hover:bg-blue-600 p-2 justify-end" href="/logout">Logout</a></div>
     <!-- Administrative Actions for Educators -->
     <% if (currUser && currUser.role == 'Educator') { %>
     <div class="container mx-auto mt-6 p-4 bg-white shadow rounded-lg">
@@ -30,7 +30,7 @@
     <% if (currUser && currUser.role == 'Student') { %>
     <div class="container mx-auto mt-6 p-4">
         <h4 class="text-xl font-semibold mb-4">Your Learning Journey</h4>
-        
+        <p>You Are a Student in this Paltform</p>
         <% if (userCourses.length == 0) { %>
         <div class="bg-yellow-200 text-center text-lg font-medium py-4 rounded">
             You are not currently enrolled in any courses!!
@@ -81,7 +81,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <% courses.forEach(course => { %>
             <div class="bg-white rounded-lg shadow-lg p-6">
-                <h5 class="font-bold text-lg mb-2"><%= course.CourseName %></h5>
+                <h5 class="font-bold text-lg mb-2"><%= course.coursetitle %></h5>
                 <hr class="my-2" />
                 <div class="flex justify-between items-center mt-2">
                     <div class="text-lg font-medium">
