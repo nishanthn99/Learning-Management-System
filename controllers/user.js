@@ -8,14 +8,14 @@ module.exports.postUsers=async (req,res)=>{
     const { firstName, lastName, email, password, role } = req.body;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     try {
-        const user = await User.newUser(firstName, lastName, email, hashedPassword, role);
+        const user = await User.newUser(firstName, lastName, email,hashedPassword, role);
         req.login(user, (err) => {
             if (err) {
                 console.log(err);
             }
+            req.flash('message',"logged In Sucessfully");
             res.redirect('dashboard');
-            req.flash('message',"loged in")
-        })
+        });
         console.log(`inserted with id${user.id}`)
     }
     catch (err) {
@@ -51,7 +51,7 @@ module.exports.logout=(req,res)=>{
         if (err) {
             return next(err);
         }
-        //req.flash("success", "You've been successfully signed out. Come back soon!");
+        req.flash("message", "You've been successfully signed out. Come back soon!");
         res.redirect("/login");
     });
 }

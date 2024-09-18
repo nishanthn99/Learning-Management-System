@@ -49,13 +49,13 @@ passport.use(new localStrategy({
     usernameField: 'email',
     passwordField: 'password'
 }, async(username,password,done) => {
-    const user=User.findOne({
+    const user=await User.findOne({
         where: {
             email: username,
         }
     });
     if (!user) {
-        return done(null.false,{message:"User not Found"});
+        return done(null,false,{message:"User not Found"});
     }
     const result=await bcrypt.compare(password,user.password);
     if(result){
