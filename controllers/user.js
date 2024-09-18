@@ -1,11 +1,14 @@
 const {User,Course,Enrollment,Progress}=require('../models');
 const Sequelize=require('sequelize');
 const db = require("../models");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 module.exports.postUsers=async (req,res)=>{
     const { firstName, lastName, email, password, role } = req.body;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     try {
-        const user = await User.newUser(firstName, lastName, email, password, role);
+        const user = await User.newUser(firstName, lastName, email, hashedPassword, role);
         req.login(user, (err) => {
             if (err) {
                 console.log(err);
@@ -55,15 +58,16 @@ module.exports.logout=(req,res)=>{
 
 module.exports.resetPassword=async(req, res) => {
     const { email, password } = req.body;
+    const hashedPassword=await bcrypt.hash(password,saltRounds);
     try {
         const user = await User.findOne({
             where: {
                 email: email
             }
         })
-        await user.update({ password: password })
+        await user.update({ password: hashedPassword })
         req.flash('message',"Password Resetted Successully");
-        res.redirect('/login')
+        res.redirect('/login');
     }
     catch (err) {
         console.log(err)

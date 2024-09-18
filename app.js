@@ -5,6 +5,7 @@ const path = require('path');
 const flash=require('connect-flash');
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+const bcrypt=require('bcrypt');
 
 app.set('view engine', 'ejs');
 
@@ -47,25 +48,29 @@ app.use(passport.session());
 passport.use(new localStrategy({
     usernameField: 'email',
     passwordField: 'password'
-}, (username, password, done) => {
-    User.findOne({
+}, async(username,password,done) => {
+    const user=User.findOne({
         where: {
             email: username,
-            password: password
         }
-    })
-        .then((user) => {
-            return done(null, user)
-        })
-        .catch((err) => {
-            return err
-        })
+    });
+    if (!user) {
+        return done(null.false,{message:"User not Found"});
+    }
+    const result=await bcrypt.compare(password,user.password);
+    if(result){
+        return done(null,user);
+    }
+    else{
+        return done(null,false,{message:"Invalid Login Credential"});
+    }
 }));
 
 passport.serializeUser((user, done) => {
     console.log(`Serailized user with session id ${user.id}`)
     done(null, user.id)
-})
+});
+
 passport.deserializeUser((id, done) => {
     User.findByPk(id)
         .then((user) => {
@@ -74,7 +79,7 @@ passport.deserializeUser((id, done) => {
         .catch((err) => {
             done(err, null)
         })
-})
+});
 
 
 const { User} = require('./models');
