@@ -1,129 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-<%-include('boilerplate') %>
-<body>
+<%- include('boilerplate') %>
+<body class="flex flex-col min-h-screen bg-gray-100">
     <%- include('header') %>
-    <h3 class="mt-3 mb-2"><%=course.coursetitle%></h3>
-<hr/>
-<div class="grid grid-cols-12 gap-4">
-  <div class="col-span-6">
-    <button
-      class="bg-yellow-500 text-white px-4 py-2 mt-3 rounded-lg hover:bg-yellow-600"
-      type="button"
-      data-bs-toggle="offcanvas"
-      data-bs-target="#offcanvasWithBothOptions"
-      aria-controls="offcanvasWithBothOptions"
-    >
-      Click here for Pages &nbsp; <i class="fa-solid fa-hand-point-left"></i>
-    </button>
-  </div>
-  <div class="col-span-5">
-    <%if(currUser && currUser.role=='Educator' && currUser.id==course.educatorId){%>
-    <a
-      href="/course/<%=course.id%>/chapter/<%=chapter.id%>/page/createpage"
-      class="bg-blue-500 text-white px-4 py-2 mt-3 rounded-lg hover:bg-blue-600"
-    >
-      Add New Page
-    </a>
-    <%}%>
-  </div>
-</div>
+    
+    <main class="flex-grow p-4">
+        <h3 class="text-2xl font-bold mb-4"><%= course.coursetitle %></h3>
+        <hr class="border-gray-300 mb-4"/>
 
-<div
-  class="fixed inset-0 bg-gray-800 bg-opacity-75 offcanvas offcanvas-start"
-  data-bs-scroll="true"
-  tabindex="-1"
-  id="offcanvasWithBothOptions"
-  aria-labelledby="offcanvasWithBothOptionsLabel"
->
-  <div class="offcanvas-header bg-blue-500 text-white p-4">
-    <h4 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">
-      <%=chapter.chaptertitle%>
-    </h4>
-    <button
-      type="button"
-      class="text-white hover:text-gray-300"
-      data-bs-dismiss="offcanvas"
-      aria-label="Close"
-    >&times;</button>
-  </div>
-  <div class="offcanvas-body p-4">
-    <%for(p of pages){%>
-    <a
-      href="/course/<%=course.id%>/chapter/<%=chapter.id%>/page/<%=p.id%>"
-      class="no-underline"
-    >
-      <div class="border border-gray-300 p-2 text-lg font-medium text-gray-900 hover:bg-gray-100">
-        <%=p.pagetitle%>
-      </div>
-    </a>
-    <%}%>
-  </div>
-</div>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
+            <div class="col-span-12 md:col-span-6">
+                <button
+                    class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasWithBothOptions"
+                    aria-controls="offcanvasWithBothOptions"
+                >
+                    Click here for Pages &nbsp; <i class="fa-solid fa-hand-point-left"></i>
+                </button>
+            </div>
+            <div class="col-span-12 md:col-span-5 flex justify-center md:justify-start">
+                <% if (currUser && currUser.role == 'Educator' && currUser.id == course.educatorId) { %>
+                <a
+                    href="/course/<%= course.id %>/chapter/<%= chapter.id %>/page/createpage"
+                    class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                    Add New Page
+                </a>
+                <% } %>
+            </div>
+        </div>
 
-<div class="mt-3">
-  <% if (!page) { %>
-  <div class="text-center text-red-600 w-full h-64 mt-3 p-5">
-    <h4>Pages not Found!</h4>
-  </div>
-  <% } else { %>
-  <div class="grid grid-cols-12 mt-5 gap-4">
-    <div class="col-span-9">
-      <h3 class="text-2xl font-bold"><%= page.pagetitle %></h3>
-    </div>
-    <div class="col-span-3 flex space-x-4">
-      <%if(currUser && currUser.role=='Educator' && currUser.id==course.educatorId){%>
-      <form
-        action="/course/<%= course.id %>/chapter/<%= chapter.id %>/page/<%= page.id %>/editpage"
-        method="get"
-      >
-        <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">Edit</button>
-      </form>
-      <form
-        action="/course/<%= course.id %>/chapter/<%= chapter.id %>/page/<%= page.id %>/deletepage"
-        method="post"
-      >
-      <input type="hidden" name="_csrf" value="<%=_csrf %>">
-        <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Delete</button>
-      </form>
-      <%}%>
-    </div>
-  </div>
+        <div
+            class="fixed inset-0 bg-gray-800 bg-opacity-75 offcanvas offcanvas-start"
+            data-bs-scroll="true"
+            tabindex="-1"
+            id="offcanvasWithBothOptions"
+            aria-labelledby="offcanvasWithBothOptionsLabel"
+        >
+            <div class="offcanvas-header bg-blue-500 text-white p-4">
+                <h4 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">
+                    <%= chapter.chaptertitle %>
+                </h4>
+                <button
+                    type="button"
+                    class="text-white hover:text-gray-300"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close"
+                >&times;</button>
+            </div>
+            <div class="offcanvas-body p-4">
+                <% for (p of pages) { %>
+                <a
+                    href="/course/<%= course.id %>/chapter/<%= chapter.id %>/page/<%= p.id %>"
+                    class="block no-underline mb-2"
+                >
+                    <div class="border border-gray-300 p-2 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg">
+                        <%= p.pagetitle %>
+                    </div>
+                </a>
+                <% } %>
+            </div>
+        </div>
 
-  <hr class="my-4 border-gray-300" />
-  <div class="text-lg">
-    <%- page.content %>
-  </div>
-  <hr class="my-4 border-gray-300" />
+        <div class="mt-3">
+            <% if (!page) { %>
+            <div class="text-center text-red-600 w-full h-64 mt-3 p-5 bg-red-100 rounded-lg">
+                <h4>Pages not Found!</h4>
+            </div>
+            <% } else { %>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-3 mt-5">
+                <div class="col-span-12 md:col-span-9">
+                    <h3 class="text-2xl font-bold"><%= page.pagetitle %></h3>
+                </div>
+                <div class="col-span-12 md:col-span-3 flex space-x-4">
+                    <% if (currUser && currUser.role == 'Educator' && currUser.id == course.educatorId) { %>
+                    <form
+                        action="/course/<%= course.id %>/chapter/<%= chapter.id %>/page/<%= page.id %>/editpage"
+                        method="get"
+                    >
+                        <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">Edit</button>
+                    </form>
+                    <form
+                        action="/course/<%= course.id %>/chapter/<%= chapter.id %>/page/<%= page.id %>/deletepage"
+                        method="post"
+                    >
+                        <input type="hidden" name="_csrf" value="<%=_csrf %>">
+                        <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400">Delete</button>
+                    </form>
+                    <% } %>
+                </div>
+            </div>
 
-  <div class="grid grid-cols-12 gap-4 mb-3 mt-3">
-    <div class="col-span-5">
-      <% if(currUser.id!=course.educatorId){%> <%if(!isMarked){%>
-      <form
-        action="/course/<%= course.id %>/chapter/<%= chapter.id %>/page/<%= page.id %>"
-        method="post"
-      >
-        <input type="hidden" name="_csrf" value="<%=_csrf%>" />
-        <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Mark As Complete</button>
-      </form>
-      <%}else{%>
-      <button class="border border-blue-100 text-green-500 px-4 py-2 bg-gray-400 rounded-lg" disabled>
-        Marked As Completed
-      </button>
-      <%}%> <%}%>
-    </div>
-    <div class="col-span-6">
-      <form
-        action="/course/<%= course.id %>/chapter/<%= chapter.id %>/page/<%=pages[nextIndex].id %>"
-        method="get">
-        <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Next</button>
-      </form>
-    </div>
-  </div>
+            <hr class="my-4 border-gray-300" />
+            <div class="text-lg mb-4">
+                <%- page.content %>
+            </div>
+            <hr class="my-4 border-gray-300" />
 
-  <hr class="my-4 border-gray-300" />
-  <% } %>
-</div>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-3 mt-3">
+                <div class="col-span-12 md:col-span-5 flex justify-center md:justify-start">
+                    <% if (currUser.id != course.educatorId) { %> 
+                    <% if (!isMarked) { %>
+                    <form
+                        action="/course/<%= course.id %>/chapter/<%= chapter.id %>/page/<%= page.id %>"
+                        method="post"
+                    >
+                        <input type="hidden" name="_csrf" value="<%=_csrf %>" />
+                        <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">Mark As Complete</button>
+                    </form>
+                    <% } else { %>
+                    <button class="border border-blue-100 text-green-500 px-4 py-2 bg-gray-400 rounded-lg" disabled>
+                        Marked As Completed
+                    </button>
+                    <% } %>
+                    <% } %>
+                </div>
+                <div class="col-span-12 md:col-span-6 flex justify-center md:justify-end">
+                    <form
+                        action="/course/<%= course.id %>/chapter/<%= chapter.id %>/page/<%= pages[nextIndex].id %>"
+                        method="get">
+                        <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">Next</button>
+                    </form>
+                </div>
+            </div>
+
+            <hr class="my-4 border-gray-300" />
+            <% } %>
+        </div>
+    </main>
+
     <%- include('footer') %>
 </body>
 </html>

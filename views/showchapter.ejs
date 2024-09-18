@@ -1,86 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-<%-include('boilerplate') %>
-<body>
-    <%-include('header') %>
-    <h3 class="text-xl p-2 font-semibold"><%=course.coursetitle%></h3>
-    <hr class="border-gray-400"/>
-    <div class="flex flex-wrap justify-between">
-      <div class="w-1/2 mt-4 ml-4">
-        <h4 class="text-lg font-semibold">Chapters</h4>
-        <%if(currUser && currUser.role=='Educator' &&
-        currUser.id==course.educatorId){%>
-        <form action="/course/<%=course.id%>/chapter/createchapter" method="get">
-          <button class="bg-yellow-500 text-white px-4 py-2 mt-2 rounded-lg hover:bg-yellow-600">Add Chapter</button>
-        </form>
-        <%}%>
-      </div>
+<%- include('boilerplate') %>
+<body class="bg-gray-100 flex flex-col min-h-screen">
+    <%- include('header') %>
     
-      <!-- Enroll card -->
-      <% if(enrolled && !enrolled.length && currUser.id!=course.educatorId){%>
-      <div class="w-64 ml-3 bg-white shadow-md rounded-lg p-4">
-        <div class="card-body">
-          <h5 class="text-lg font-semibold mb-2"><%=course.coursetitle%></h5>
-          <hr class="border-gray-300" />
-          <div class="flex justify-between items-center mt-2">
-            <div class="text-lg font-medium">
-              <%if(course.educatorId==user.id){%>
-              <p><%=user.firstname%></p>
-              <%}else{%>
-              <p>John Doe</p>
-              <%}%>
+    <main class="flex-grow container mx-auto p-4">
+        <h3 class="text-2xl font-bold mb-4"><%= course.coursetitle %></h3>
+        <hr class="border-gray-300 mb-4"/>
+
+        <div class="flex flex-col md:flex-row md:justify-between">
+            <!-- Chapters Section -->
+            <div class="w-full md:w-1/2 mb-4 md:mb-0">
+                <h4 class="text-xl font-semibold mb-2">Chapters</h4>
+                <% if (currUser && currUser.role == 'Educator' && currUser.id == course.educatorId) { %>
+                <form action="/course/<%= course.id %>/chapter/createchapter" method="get">
+                    <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">Add Chapter</button>
+                </form>
+                <% } %>
             </div>
-            <div class="flex items-center">
-              <p class="ml-2 text-lg font-medium"><%= course.getDataValue('enrollmentCount')%></p>
+
+            <!-- Enroll Card -->
+            <% if (enrolled && !enrolled.length && currUser.id != course.educatorId) { %>
+            <div class="w-full md:w-64 bg-white shadow-md rounded-lg p-4">
+                <h5 class="text-lg font-semibold mb-2"><%= course.coursetitle %></h5>
+                <hr class="border-gray-300 mb-2" />
+                <div class="flex justify-between items-center mb-4">
+                    <div class="text-lg font-medium">
+                        <% if (course.educatorId == user.id) { %>
+                        <p><%= user.firstname %></p>
+                        <% } else { %>
+                        <p>John Doe</p>
+                        <% } %>
+                    </div>
+                    <div class="flex items-center">
+                        <p class="ml-2 text-lg font-medium"><%= course.getDataValue('enrollmentCount') %></p>
+                    </div>
+                </div>
+                <form action="/course/<%= course.id %>/enroll" method="post">
+                    <input type="hidden" name="_csrf" value="<%=_csrf %>" />
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">Enroll</button>
+                </form>
             </div>
-          </div>
-          <form action="/course/<%=course.id%>/enroll" method="post" class="mt-4">
-            <input type="hidden" name="_csrf" value="<%=_csrf%>" />
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Enroll</button>
-          </form>
+            <% } %>
         </div>
-      </div>
-      <%}%>
-    </div>
-    <hr class="border-gray-300" />
-    
-    <div class="mt-4">
-      <% if(!chapters.length){ %>
-      <div class="bg-red-100 text-center text-lg font-medium text-red-600 p-4 rounded-lg" role="alert">
-        Chapters not Found!
-      </div>
-      <% } %> <% for(chapter of chapters) { %>
-      <div class="mx-auto w-1/2 mb-3">
-        <% if(enrolled && enrolled.length || currUser.id==course.educatorId){%>
-        <div class="flex justify-between items-center border border-gray-300 p-3 rounded-lg">
-          <a href="/course/<%=course.id%>/chapter/<%=chapter.id%>/page" class="text-black no-underline">
-            <div class="text-lg font-medium"><%= chapter.chaptertitle %></div>
-          </a>
-          <%if(currUser && currUser.role=='Educator' &&
-          currUser.id==course.educatorId){%>
-          <div class="flex space-x-2">
-            <form action="/course/<%=course.id%>/chapter/<%=chapter.id%>/editchapter" method="get">
-              <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">Edit</button>
-            </form>
-            <form action="/course/<%=course.id%>/chapter/<%=chapter.id%>/deletechapter" method="post">
-              <input type="hidden" name="_csrf" value="<%=_csrf%>" />
-              <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Delete</button>
-            </form>
-          </div>
-          <%}%>
+
+        <hr class="border-gray-300 my-4" />
+
+        <!-- Chapters List -->
+        <div>
+            <% if (!chapters.length) { %>
+            <div class="bg-red-100 text-center text-lg font-medium text-red-600 p-4 rounded-lg mb-4" role="alert">
+                Chapters not Found!
+            </div>
+            <% } %>
+
+            <% for (chapter of chapters) { %>
+            <div class="mb-4">
+                <% if (enrolled && enrolled.length || currUser.id == course.educatorId) { %>
+                <div class="flex justify-between items-center border border-gray-300 p-4 rounded-lg bg-white shadow-sm">
+                    <a href="/course/<%= course.id %>/chapter/<%= chapter.id %>/page" class="text-lg font-medium text-blue-600 hover:underline"><%= chapter.chaptertitle %></a>
+                    <% if (currUser && currUser.role == 'Educator' && currUser.id == course.educatorId) { %>
+                    <div class="flex space-x-2">
+                        <form action="/course/<%= course.id %>/chapter/<%= chapter.id %>/editchapter" method="get">
+                            <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">Edit</button>
+                        </form>
+                        <form action="/course/<%= course.id %>/chapter/<%= chapter.id %>/deletechapter" method="post">
+                            <input type="hidden" name="_csrf" value="<%=_csrf %>" />
+                            <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400">Delete</button>
+                        </form>
+                    </div>
+                    <% } %>
+                </div>
+                <% } else { %>
+                <div class="border border-gray-300 p-4 rounded-lg bg-white text-lg font-medium">
+                    <%= chapter.chaptertitle %>
+                </div>
+                <% } %>
+
+                <% if (enrolled && !enrolled.length && !(currUser.id == course.educatorId)) { %>
+                <div class="flex justify-center items-center text-gray-500 mt-2">
+                    <i class="fa-solid fa-lock text-xl"></i>
+                </div>
+                <% } %>
+            </div>
+            <% } %>
         </div>
-        <% }else{ %>
-        <div class="border border-gray-300 p-3 rounded-lg text-lg font-medium">
-          <%= chapter.chaptertitle %>
-        </div>
-        <% } %>
-      </div>
-      <% if(enrolled && !enrolled.length && !(currUser.id==course.educatorId) ){%>
-      <div class="flex justify-center items-center text-gray-500">
-        <i class="fa-solid fa-lock text-xl"></i>
-      </div>
-      <% } %> <% } %>
-    </div> 
-    <%-include('footer')%>   
+    </main>
+
+    <%- include('footer') %>
 </body>
 </html>

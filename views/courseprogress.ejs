@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<% -include('boilerplate') %>
-<body>
-<h3 class="text-center ml-4 mt-5">Educator Analytics Dashboard</h3>
-<table class="table table-striped table-hover mt-5">
-  <thead>
-    <tr>
-      <th>Sl.no</th>
-      <th>Course Name</th>
-      <th>Enrollment</th>
-      <th>Relative Popularity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% courses.forEach((course, index) => { %>
-    <tr>
-      <td><%= index + 1 %></td>
-      <td><%= course.coursetitle %></td>
-      <td><%= course.enrollmentCount %></td>
-      <td><%= course.relativePopularity.toFixed(2)%> %</td>
-    </tr>
-    <% }); %>
-  </tbody>
-</table>
+<%- include('boilerplate') %>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <%- include('header') %>
+    
+    <main class="flex-grow p-4">
+        <h3 class="text-2xl font-bold text-center mt-6 mb-4">Educator Analytics Dashboard</h3>
+        
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white shadow-md rounded-lg border border-gray-200">
+                <thead class="bg-gray-800 text-white">
+                    <tr>
+                        <th class="px-4 py-2 border-b">Sl.no</th>
+                        <th class="px-4 py-2 border-b">Course Name</th>
+                        <th class="px-4 py-2 border-b">Enrollment</th>
+                        <th class="px-4 py-2 border-b">Relative Popularity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% courses.forEach((course, index) => { %>
+                    <tr class="hover:bg-gray-100">
+                        <td class="px-4 py-2 border-b"><%= index + 1 %></td>
+                        <td class="px-4 py-2 border-b"><%= course.coursetitle %></td>
+                        <td class="px-4 py-2 border-b"><%= course.enrollmentCount %></td>
+                        <td class="px-4 py-2 border-b"><%= course.relativePopularity.toFixed(2) %> %</td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <%- include('footer') %>
 </body>
 </html>

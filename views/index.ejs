@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +8,35 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./css/styles.css">
 </head>
-<body>
+
+<body class="flex flex-col min-h-screen bg-gray-100 font-sans">
+    <!-- Include Header -->
     <%- include('header') %>
-    <div class="grid grid-cols-4 gap-4 min-h-full">
-        <div class="col-start-2 col-span-2">
-            <%= title %>
-            <p>Don't Have Any Account <a href="/signup" class="text-blue-800">Sign-Up</a></p>
-            <p>LogIn To Your Account <a href="/login" class="text-blue-800">LogIn</a></p>
+    <div class="mx-auto mt-4 italic text-xl font-bold"><%= title %></div>
+    <!-- Main Content Section -->
+    <div class="flex-grow flex items-center justify-center">
+        <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+            <!-- Title Section -->
+            <h1 class="text-xl font-semibold text-center text-gray-800 mb-6">
+                LMS
+            </h1>
+
+            <!-- Sign-Up and Log-In Links -->
+            <div class="text-center space-y-4 ">
+                <p class="text-gray-600 ">
+                    Don't have an account?
+                    <a href="/signup" class="text-blue-600 font-semibold hover:text-blue-800">Sign-Up</a>
+                </p>
+                <p class="text-gray-600">
+                    Log in to your account
+                    <a href="/login" class="text-blue-600 font-semibold hover:text-blue-800">Log In</a>
+                </p>
+            </div>
         </div>
     </div>
+
+    <!-- Include Footer -->
     <%- include('footer') %>
 </body>
+
 </html>

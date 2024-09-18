@@ -1,27 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Chapter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
-<body>
+
+<body class="bg-gray-100 min-h-screen flex flex-col">
     <%- include('header') %>
-    <form action="/course/<%= id %>/chapter" method="post">
-        <input type="hidden" name="_csrf" value="<%= _csrf %>">
-        <div>
-            <label for="name">Chapter Name:<%=id %></label>
-            <input type="text" id="title" name="title" required>
+
+    <div class="flex-grow flex items-center justify-center">
+        <div class="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full">
+            <h2 class="text-2xl font-bold text-center mb-6 text-gray-700">Create a New Chapter</h2>
+            
+            <form action="/course/<%= id %>/chapter" method="post" class="space-y-6">
+                <input type="hidden" name="_csrf" value="<%= _csrf %>">
+                
+                <!-- Chapter Name Input -->
+                <div class="flex flex-col">
+                    <label for="title" class="mb-2 text-gray-600 font-medium">Chapter Name:</label>
+                    <input type="text" id="title" name="title" required
+                           class="p-3 border border-gray-300 rounded-lg focus:ring focus:ring-indigo-300 outline-none">
+                </div>
+                
+                <!-- Chapter Description Input -->
+                <div class="flex flex-col">
+                    <label for="desc" class="mb-2 text-gray-600 font-medium">Chapter Description:</label>
+                    <textarea id="desc" name="desc" required
+                              class="p-3 border border-gray-300 rounded-lg focus:ring focus:ring-indigo-300 outline-none resize-none"
+                              rows="4"></textarea>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="flex justify-center">
+                    <input type="submit" value="Create Chapter" 
+                           class="py-2 px-6 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-700 transition">
+                </div>
+            </form>
         </div>
-        <div>
-            <label for="name">Chapter description:</label>
-            <input type="text" id="desc" name="desc" required>
-        </div>
-        <div>
-            <input type="submit" value="Create Chapter" class="p-3 bg-green-500 rounded hover:bg-green-700">
-        </div>
-    </form>
+    </div>
     <%- include('footer') %>
 </body>
-
 </html>
