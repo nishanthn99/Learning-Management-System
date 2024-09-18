@@ -10,7 +10,8 @@ module.exports.postUsers=async (req,res)=>{
             if (err) {
                 console.log(err);
             }
-            res.redirect('dashboard')
+            res.redirect('dashboard');
+            req.flash('message',"loged in")
         })
         console.log(`inserted with id${user.id}`)
     }
@@ -38,7 +39,8 @@ module.exports.showForgotpasswaord=(req,res)=>{
 }
 
 module.exports.postSession=(req,res)=>{
-    res.redirect('dashboard')
+    req.flash('message',"Logged in Successfully");
+    res.redirect('dashboard');
 }
 
 module.exports.logout=(req,res)=>{
@@ -60,6 +62,7 @@ module.exports.resetPassword=async(req, res) => {
             }
         })
         await user.update({ password: password })
+        req.flash('message',"Password Resetted Successully");
         res.redirect('/login')
     }
     catch (err) {

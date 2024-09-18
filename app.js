@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
+const flash=require('connect-flash');
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
 
 app.set('view engine', 'ejs');
 
@@ -33,6 +33,13 @@ app.use(session({
     saveUninitialized: true,
     cookie: { maxAge: 24 * 60 * 60 * 1000 }
 }))
+
+app.use(flash());
+app.use((req,res,next)=>{
+    res.locals.message = req.flash('message');
+    res.locals.error=req.flash('error');
+    next();
+})
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -70,7 +77,7 @@ passport.deserializeUser((id, done) => {
 })
 
 
-const { User,Course,Chapter,Page} = require('./models');
+const { User} = require('./models');
 app.use(express.static(path.join(__dirname, 'public')));
 
 
