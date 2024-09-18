@@ -43,11 +43,12 @@ module.exports.deletePage = async (req, res) => {
 module.exports.markAsComplete = async (req, res) => {
     try {
         const userId = req.user.id;
-        const courseId = req.params.CourseId;
-        const pageId = req.params.pageId;
+        const courseId = req.params.courseid;
+        const pageId = req.params.pageid;
+        const chapterId=req.params.chapterid;
         await Progress.create({ studentId: userId,courseId, pageId, IsComplete: true });
         //req.flash("success", "Great job! Page marked as completed.");
-        res.redirect(`/course/${courseId}/page/${pageId}`);
+        res.redirect(`/course/${courseId}/chapter/${chapterId}/page/${pageId}`);
     }
     catch (err) {
         console.log(err);

@@ -5,16 +5,15 @@ const courseController = require("../controllers/course");
 const { isEducator} = require("../middleware.js");
 //all courses
 //create course
-router.get("/createcourse", connectEnsureLogin.ensureLoggedIn(), courseController.getCreateCourse);
+router.get("/createcourse", connectEnsureLogin.ensureLoggedIn(),isEducator,courseController.getCreateCourse);
 //post new course
 router.post("/", connectEnsureLogin.ensureLoggedIn(),isEducator, courseController.postNewCourse);
 //educator
-router.get("/:educatorid/mycourse/", connectEnsureLogin.ensureLoggedIn(), courseController.getEducatorCourses);
+router.get("/:educatorid/mycourse", connectEnsureLogin.ensureLoggedIn(), courseController.getEducatorCourses);
 //progress
-router.get("/:educatorid/viewreport", connectEnsureLogin.ensureLoggedIn(), courseController.progress);
+router.get("/:educatorid/viewreport", connectEnsureLogin.ensureLoggedIn(),courseController.progress);
 //enroll
 router.post("/:courseid/enroll", connectEnsureLogin.ensureLoggedIn(),courseController.enroll);
-
 
 
 module.exports = router;
