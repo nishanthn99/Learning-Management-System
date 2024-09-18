@@ -18,24 +18,22 @@
           >
             <input type="hidden" name="_csrf" value="<%=_csrf%>" />
             <div>
-              <label for="ChapterName" class="block text-lg font-medium mb-2"
+              <label for="title" class="block text-lg font-medium mb-2"
                 >Give the Chapter Name you want to Update</label
               >
               <input
-                id="ChapterName"
                 type="text"
                 class="border border-gray-300 rounded-md p-2 w-full"
-                name="ChapterName"
+                name="title"
                 value="<%=chapter.chaptertitle%>"
               />
             </div>
             <div class="mt-4">
-              <label for="Description" class="block text-lg font-medium mb-2"
+              <label for="description" class="block text-lg font-medium mb-2"
                 >Description</label
               >
               <textarea
-                id="Description"
-                name="Description"
+                name="description"
                 class="border border-gray-300 rounded-md p-2 w-full"
                 rows="4"
               ><%=chapter.description%></textarea>

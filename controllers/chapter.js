@@ -81,7 +81,7 @@ module.exports.updateChapter = async (req, res) => {
     let courseId = req.params.courseid;
     let chapterId = req.params.chapterid;
     try {
-        await Chapter.update({chaptertitle:req.body.title,description:req.body.desc}, {
+        await Chapter.update({chaptertitle:req.body.title,description:req.body.description}, {
             where: {
                 id: chapterId,
             }

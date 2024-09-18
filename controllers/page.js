@@ -58,7 +58,7 @@ module.exports.updatePage = async (req, res) => {
     let chapterId=req.params.chapterid;
     let pageId = req.params.pageid;
     try {
-        await Page.update({ ...req.body }, {
+        await Page.update({ pagetitle:req.body.title,content:req.body.content}, {
             where: {
                 id: pageId,
             }
