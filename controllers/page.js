@@ -47,7 +47,7 @@ module.exports.markAsComplete = async (req, res) => {
         const pageId = req.params.pageid;
         const chapterId=req.params.chapterid;
         await Progress.create({ studentId: userId,courseId, pageId, IsComplete: true });
-        //req.flash("success", "Great job! Page marked as completed.");
+        req.flash("messgage", "Great job! Page marked as completed.");
         res.redirect(`/course/${courseId}/chapter/${chapterId}/page/${pageId}`);
     }
     catch (err) {
@@ -64,7 +64,7 @@ module.exports.updatePage = async (req, res) => {
                 id: pageId,
             }
         });
-        //req.flash("success", "Page Updated Successfully!!");
+        req.flash("message", "Page Updated Successfully!!");
         res.redirect(`/course/${courseId}/chapter/${chapterId}/page`);
     }
     catch (err) {

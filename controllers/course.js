@@ -1,5 +1,4 @@
-const {Course,Progress,Enrollment,User}=require('../models');
-const Sequelize=require('sequelize');
+const {Course,Enrollment,User}=require('../models');
 module.exports.getCreateCourse=(req,res)=>{
     res.render('createcourse',{title:"Create a New Course in Learning Management System",_csrf:req.csrfToken()});
 }
@@ -48,7 +47,7 @@ module.exports.enroll = async (req, res) => {
         // Check if the course exists
         const course = await Course.findByPk(courseid);
         if (!course) {
-            //req.flash("error", "Course not found");
+            req.flash("error", "Course not found");
             return res.redirect(`/course/${courseid}/chapter`);
         }
 
@@ -61,7 +60,7 @@ module.exports.enroll = async (req, res) => {
         });
 
         if (existingEnrollment) {
-            //req.flash("error", "User is already enrolled in this course");
+            req.flash("error", "User is already enrolled in this course");
             return res.redirect(`/course/${courseid}/chapter`);
         }
 
@@ -72,7 +71,7 @@ module.exports.enroll = async (req, res) => {
             courseId:courseid,
             EducatorId,
         });
-        //req.flash("success", "Enrolled Successfully!!");
+        req.flash("message", "Enrolled Successfully!!");
         return res.redirect(`/course/${courseid}/chapter`);
     } catch (error) {
         

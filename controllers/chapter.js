@@ -86,7 +86,7 @@ module.exports.updateChapter = async (req, res) => {
                 id: chapterId,
             }
         });
-        //req.flash("success", "Chapter Updated Succesfully!!");
+        req.flash("message", "Chapter Updated Succesfully!!");
         res.redirect(`/course/${courseId}/chapter`);
     }
     catch (err) {
@@ -104,7 +104,7 @@ module.exports.deleteChapter = async (req, res) => {
                 id: chapterId,
             }
         });
-        //req.flash("success", "Chapter Deleted!!");
+        req.flash("message", "Chapter Deleted!!");
         res.redirect(`/course/${courseId}/chapter`);
     }
     catch (err) {
