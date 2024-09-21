@@ -22,6 +22,10 @@ module.exports.postUsers=async (req,res)=>{
             req.flash("error", "Password must be at least 8 characters");
             return res.redirect("/signup");
         }
+        if (role.length < 8) {
+            req.flash("error", "You Have to Choose a Particular Role");
+            return res.redirect("/signup");
+        }
         const user = await User.newUser(firstName, lastName, email,hashedPassword, role);
         req.login(user, (err) => {
             if (err) {
