@@ -21,8 +21,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Chapter.init({
-    chaptertitle: DataTypes.STRING,
-    description: DataTypes.STRING
+    chaptertitle:{
+      type:DataTypes.STRING,
+      allowNull:false
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate:{
+        len:[10,30]
+      }
+    }
   }, {
     sequelize,
     modelName: 'Chapter',
