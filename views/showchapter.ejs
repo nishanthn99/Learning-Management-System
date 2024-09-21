@@ -3,11 +3,12 @@
 <%- include('boilerplate') %>
 <body class="bg-gray-100 flex flex-col min-h-screen">
     <%- include('header') %>
-    
-    <main class="flex-grow container mx-auto p-4">
+    <div class="flex justify-center mt-2">
+        <a href="/dashboard" class="flex rounded-md bg-blue-500 text-white px-4 py-2 hover:bg-blue-600 transition duration-300">Back To Dashboard</a>
+    </div>
+        <main class="flex-grow container mx-auto p-4">
         <h3 class="text-2xl font-bold mb-4"><%= course.coursetitle %></h3>
         <hr class="border-gray-300 mb-4"/>
-
         <div class="flex flex-col md:flex-row md:justify-between">
             <!-- Chapters Section -->
             <div class="w-full md:w-1/2 mb-4 md:mb-0">
