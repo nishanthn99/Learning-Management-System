@@ -28,9 +28,6 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate:{
-        len:[10,30]
-      }
     }
   }, {
     sequelize,

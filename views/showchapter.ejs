@@ -26,11 +26,7 @@
                 <hr class="border-gray-300 mb-2" />
                 <div class="flex justify-between items-center mb-4">
                     <div class="text-lg font-medium">
-                        <% if (course.educatorId == user.id) { %>
-                        <p><%= user.firstname %></p>
-                        <% } else { %>
-                        <p>John Doe</p>
-                        <% } %>
+                        <p><%= course.firstname %></p>
                     </div>
                     <div class="flex items-center">
                         <p class="ml-2 text-lg font-medium"><%= course.getDataValue('enrollmentCount') %></p>

@@ -8,6 +8,20 @@ module.exports.postUsers=async (req,res)=>{
     const { firstName, lastName, email, password, role } = req.body;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     try {
+        if (email.length == 0) {
+            req.flash("error", "Email can not be empty!");
+            return res.redirect("/signup");
+        }
+
+        if (firstName.length == 0) {
+            req.flash("error", "First name cannot be empty!");
+            return res.redirect("/signup");
+        }
+
+        if (password.length < 8) {
+            req.flash("error", "Password must be at least 8 characters");
+            return res.redirect("/signup");
+        }
         const user = await User.newUser(firstName, lastName, email,hashedPassword, role);
         req.login(user, (err) => {
             if (err) {

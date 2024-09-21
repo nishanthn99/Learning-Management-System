@@ -14,8 +14,16 @@ module.exports.getNewPage=async(req,res)=>{
 }
 
 module.exports.postNewPage=async(req,res)=>{
+    const courseid=req.params.courseid;
     try{
-        const courseid=req.params.courseid;
+        if(req.body.title.length==0){
+            req.flash('error',"Page Title cannot be null");
+            return res.redirect(`/course/${courseid}/chapter/${req.params.chapterid}/page/createpage`);
+        }
+        if(req.body.content.length==0){
+            req.flash('error',"Page Description cannot be null");
+            return res.redirect(`/course/${courseid}/chapter/${req.params.chapterid}/page/createpage`);
+        }
         await Page.addPage(courseid,req.body.chapterId,req.body.title,req.body.content);
         req.flash('message',`New Page Created for the chapter`)
         res.redirect(`/course/${courseid}/chapter`);

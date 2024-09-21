@@ -6,6 +6,10 @@ module.exports.getCreateCourse=(req,res)=>{
 module.exports.postNewCourse=async(req,res)=>{
     const id=JSON.parse(req.user.id);
     try{
+        if(req.body.title.length==0){
+            req.flash('message',"Course name cannot be Null");
+            return res.redirect('course/createcourse');
+        }
         const course=await Course.addCourse(req.body.title,id);
         req.flash('message',"Course Created Successfully")
         res.redirect(`course/${course.id}/chapter/createchapter`);

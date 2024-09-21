@@ -6,8 +6,16 @@ module.exports.getNewChapter=(req,res)=>{
 
 module.exports.postNewChapter=async(req,res)=>{
     try{
+        if(req.body.title.length==0){
+            req.flash('message',"Chapter name Cannot be Null");
+            return res.redirect(`chapter/createchapter`);
+        }
+        if(req.body.desc.length==0){
+            req.flash('message',"Chapter description Cannot be Null");
+            return res.redirect(`chapter/createchapter`);
+        }
         const chapter=await Chapter.addChapter(req.body.title,req.body.desc,req.params.courseid);
-        req.flash('message',"Chapter Created Successfully")
+        req.flash('message',"Chapter Created Successfully");
         res.redirect(`/course/${req.params.courseid}/chapter/${chapter.id}/page/createpage`);
         }
         catch(err){
@@ -33,7 +41,7 @@ module.exports.getAllChapter = async (req, res) => {
                 {
                     model: User,
                     as: 'User',
-                    attributes: ['firstname', 'lastname'],
+                    attributes: ['firstname'],
                     required: true
                 },
                 {
@@ -49,7 +57,7 @@ module.exports.getAllChapter = async (req, res) => {
         res.locals.enrolled = await Enrollment.findAll({ where: { userId, courseId } });
 
         // Fetch all chapters for the given course
-        let chapters = await Chapter.findAll({ where: { courseId: courseId }, order: [['id']] });
+        let chapters = await Chapter.findAll({ where: { courseId }, order: [['id']] });
 
         const user=await User.findOne({
             where:{id:req.user.id},
