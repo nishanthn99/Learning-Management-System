@@ -7,6 +7,7 @@ module.exports.postNewCourse=async(req,res)=>{
     const id=JSON.parse(req.user.id);
     try{
         const course=await Course.addCourse(req.body.title,id);
+        req.flash('message',"Course Created Successfully")
         res.redirect(`course/${course.id}/chapter/createchapter`);
     }
     catch(err){

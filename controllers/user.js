@@ -13,7 +13,7 @@ module.exports.postUsers=async (req,res)=>{
             if (err) {
                 console.log(err);
             }
-            req.flash('message',"signed Up Sucessfully Explore...");
+            req.flash('message',"Account created Sucessfully Explore...");
             res.redirect('dashboard');
         });
         console.log(`inserted with id${user.id}`)

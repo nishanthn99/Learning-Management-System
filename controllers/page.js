@@ -17,6 +17,7 @@ module.exports.postNewPage=async(req,res)=>{
     try{
         const courseid=req.params.courseid;
         await Page.addPage(courseid,req.body.chapterId,req.body.title,req.body.content);
+        req.flash('message',`New Page Created for the chapter`)
         res.redirect(`/course/${courseid}/chapter`);
     }
     catch(err){
@@ -47,7 +48,7 @@ module.exports.markAsComplete = async (req, res) => {
         const pageId = req.params.pageid;
         const chapterId=req.params.chapterid;
         await Progress.create({ studentId: userId,courseId, pageId, IsComplete: true });
-        req.flash("messgage", "Great job! Page marked as completed.");
+        req.flash("message", "Great job! Page marked as completed.");
         res.redirect(`/course/${courseId}/chapter/${chapterId}/page/${pageId}`);
     }
     catch (err) {
@@ -110,7 +111,7 @@ module.exports.getPages = async (req, res) => {
         }
         // Check if page exists
         if (!page) {
-            console.log(`No pages found for chapterId: ${chapterId}`);
+            req.flash('message',`No pages found for chapterId: ${chapterId}`);
             return res.render("showpage.ejs", {
                 currUser: req.user,
                 pages,
