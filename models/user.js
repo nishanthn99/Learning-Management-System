@@ -50,7 +50,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       unique: true,
       validate:{
-        notNull:true,
         isEmail: true
       }
     },
@@ -58,16 +57,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull:true,
-        len: [8, 100]
+        len: [8, 100],
+        notNull:true
       }
     },
     role: {
       type: DataTypes.ENUM('Educator', 'Student'),
       allowNull:false,
-      validate:{
-        notNull:true
-      }
     }
   }, {
     sequelize,

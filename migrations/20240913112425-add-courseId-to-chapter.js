@@ -9,7 +9,9 @@ module.exports = {
       type:Sequelize.INTEGER,
       references:{
         model:'Courses',
-        key:'id'}
+        key:'id'},
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
     })
     /**
      * Add altering commands here.

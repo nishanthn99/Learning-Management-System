@@ -9,6 +9,8 @@ module.exports = {
         model:'Chapters',
         key:'id'
         },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
     })
     /**
      * Add altering commands here.
