@@ -10,13 +10,13 @@
 <body class="bg-gray-100  flex flex-col min-h-screen text-gray-800">
     <!-- Include Header -->
     <%-include('header') %>
-   <div class="rounded-md bg-blue-200 font-sans mx-auto p-2"> <%-include('notification') %></div>
+   <div class="flex rounded-md bg-blue-200 font-sans mx-auto p-2"> <%-include('notification') %></div>
     <div class="flex justify-end mr-4" ><a class="bg-red-600 text-white rounded-md border border-gray-300 hover:bg-blue-600 p-2 justify-end" href="/logout">Logout</a></div>
     <!-- Administrative Actions for Educators -->
     <% if (currUser && currUser.role == 'Educator') { %>
     <div class="container mx-auto mt-6 p-4 bg-white shadow rounded-lg">
-        <h4 class="text-xl font-semibold mb-4">Administrative Actions</h4>
-        <p class="mb-4 text-gray-700">You are an Educator</p>
+        <h4 class="text-xl font-semibold mb-4 font-sarif">Administrative Actions</h4>
+        <p class="mb-4 text-gray-700 font-sans">You are an Educator</p>
         <a href="/course/createcourse" class="bg-yellow-500 text-white rounded py-2 px-4 mb-3 inline-block hover:bg-yellow-600">Create new course</a>
         <div class="flex space-x-4 mt-3">
             <a href="/course/<%= currUser.id %>/mycourse" class="bg-gray-500 text-white rounded py-2 px-4 hover:bg-gray-600">My Courses</a>
@@ -29,14 +29,13 @@
     <!-- Student Learning Journey -->
     <% if (currUser && currUser.role == 'Student') { %>
     <div class="container mx-auto mt-6 p-4">
-        <h4 class="text-xl font-semibold mb-4">Your Learning Journey</h4>
-        <p>You Are a Student in this Paltform</p>
+        <h4 class="text-2xl font-semibold mb-4 text-gray-800 font-sarif">You Are a Student in this Paltform</h4>
+        <p class="my-2 font-sans text-xl mx-auto">Your Learning Journey</p>
         <% if (userCourses.length == 0) { %>
         <div class="bg-yellow-200 text-center text-lg font-medium py-4 rounded">
             You are not currently enrolled in any courses!!
         </div>
         <% } %>
-
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <% userCourses.forEach(course => { %>
             <div class="bg-white rounded-lg shadow-lg p-6">
@@ -61,12 +60,15 @@
                     <a href="/course/<%= course.id %>/chapter" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
                         Continue <i class="fas fa-play"></i>
                     </a>
-                    <form action="#" method="post">
-                        <input type="hidden" name="_csrf" value="<%= _csrf %>" />
-                        <button class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
-                            Completed <%= course.progress %>%
-                        </button>
-                    </form>
+                    <div class="flex bg-green-500 p-2 rounded-md">
+                        <% if(course.progress==100){
+                            %>
+                            Course Completed
+                            <% }
+                            else{%>
+                                Completed <%=course.progress %>%
+                        <%} %>
+                    </div>
                 </div>
             </div>
             <% }) %>

@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       const completedPages = await Progress.findAll({ where: { studentId: userId, courseId } });
       let status;
       if (totalPagesInCourse > 0) {
-        status = Math.floor((completedPages.length / totalPagesInCourse) * 10);
+        status = Math.floor((completedPages.length / totalPagesInCourse) * 100);
       } else {
       status = 0;
       }

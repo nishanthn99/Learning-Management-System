@@ -47,7 +47,7 @@ module.exports.markAsComplete = async (req, res) => {
         const courseId = req.params.courseid;
         const pageId = req.params.pageid;
         const chapterId=req.params.chapterid;
-        await Progress.create({ studentId: userId,courseId, pageId, IsComplete: true });
+        await Progress.create({ studentId: userId,courseId, pageId, markAsCompleted: true });
         req.flash("message", "Great job! Page marked as completed.");
         res.redirect(`/course/${courseId}/chapter/${chapterId}/page/${pageId}`);
     }
