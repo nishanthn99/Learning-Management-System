@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasMany(models.Course,{
+      User.hasMany(models.Course, {
         foreignKey: 'educatorId',
       });
       User.hasMany(models.Enrollment, {
@@ -24,10 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "studentId",
       });
     }
-    static newUser(fname,lname,email,password,role){
-      const user=this.create({
-        firstname:fname,
-        lastname:lname,
+    static newUser(fname, lname, email, password, role) {
+      const user = this.create({
+        firstname: fname,
+        lastname: lname,
         password,
         email,
         role
@@ -38,11 +38,32 @@ module.exports = (sequelize, DataTypes) => {
 
   }
   User.init({
-    firstname: DataTypes.STRING,
+    firstname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [4,20],
+      }
+    },
     lastname: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    role: DataTypes.ENUM('Educator','Student')
+    email: {
+      type: DataTypes.STRING,
+      unique: true,
+      validate:{
+        isEmail: true
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [8, 100]
+      }
+    },
+    role: {
+      type: DataTypes.ENUM('Educator', 'Student'),
+      allowNull:false
+    }
   }, {
     sequelize,
     modelName: 'User',
