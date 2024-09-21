@@ -22,7 +22,7 @@ module.exports.postUsers=async (req,res)=>{
             req.flash("error", "Password must be at least 8 characters");
             return res.redirect("/signup");
         }
-        if (role.length < 8) {
+        if (role.length == 0) {
             req.flash("error", "You Have to Choose a Particular Role");
             return res.redirect("/signup");
         }
