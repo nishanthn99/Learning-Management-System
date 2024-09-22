@@ -11,10 +11,10 @@
     <!-- Include Header -->
     <%-include('header') %>
    <div class="flex rounded-md bg-blue-200 font-sans mx-auto p-2"> <%-include('notification') %></div>
-    <div class="flex justify-end mr-4" ><a class="bg-red-600 text-white rounded-md border border-gray-300 hover:bg-blue-600 p-2 justify-end" href="/logout">Logout</a></div>
+    <div class="flex justify-end mr-4"><a class="bg-red-600 text-white rounded-md border border-gray-300 hover:bg-blue-600 p-2 justify-end" href="/logout">Logout</a></div>
     <!-- Administrative Actions for Educators -->
     <% if (currUser && currUser.role == 'Educator') { %>
-    <div class="container mx-auto mt-6 p-4 bg-white shadow rounded-lg">
+    <div class="container mt-4 p-4 bg-white mx-2 shadow rounded-lg">
         <h4 class="text-xl font-semibold mb-4 font-sarif">Administrative Actions</h4>
         <p class="mb-4 text-gray-700 font-sans">You are an Educator</p>
         <a href="/course/createcourse" class="bg-yellow-500 text-white rounded py-2 px-4 mb-3 inline-block hover:bg-yellow-600">Create new course</a>
@@ -43,11 +43,7 @@
                 <hr class="my-2" />
                 <div class="flex justify-between items-center mt-2">
                     <div class="text-lg font-medium">
-                        <% if (course.User) { %>
                         <p><%= course.User.firstname %></p>
-                        <% } else { %>
-                        <p>John Doe</p>
-                        <% } %>
                     </div>
                     <div class="flex items-center">
                         <i class="fas fa-users text-lg"></i>
@@ -57,9 +53,11 @@
                     </div>
                 </div>
                 <div class="flex justify-between items-center mt-4">
+                    <% if(course.progress!=100){%>
                     <a href="/course/<%= course.id %>/chapter" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
                         Continue <i class="fas fa-play"></i>
                     </a>
+                    <% }%>
                     <div class="flex bg-green-500 p-2 rounded-md">
                         <% if(course.progress==100){
                             %>
