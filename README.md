@@ -4,7 +4,7 @@
 
 The Learning Management System (LMS) is an online platform designed to enhance interactions between educators and students. It allows educators to create courses, organize them into chapters and pages, while students can register, enroll in courses, access course content, mark pages as complete, and track their progress.
 
-**Application URL:** [Website](https://learning-management-system-vai1.onrender.com/)
+**Application URL:** [Website](https://learning-management-system-yjwk.onrender.com/)
 
 ## Key Features
 
