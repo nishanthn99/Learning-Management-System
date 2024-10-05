@@ -40,3 +40,44 @@ The Learning Management System (LMS) is an online platform designed to enhance i
 - **Validation:** With Postgres SQL validation checks before adding to the Database Entry.
 - **Error Handling:** The application handles errors gracefully, providing users with clear and actionable feedback.
 
+## Screenshots
+`Root Page`
+![Root Page](./Assets/Root.png)
+
+`SignUp Page`
+![SignUp Page](./Assets/signup.png)
+
+`Login Page`
+![Login Page](./Assets/login.png)
+
+`ForgotPassword Page`
+![ForgotPassword Page](./Assets/forgotpassword.png)
+
+`Educator Dashboard Page`
+![Educator Dashboard Page](./Assets/Dashboard.png)
+
+`Student Dashboard Page`
+![Student Dashboard Page](./Assets/student.png)
+
+`Add Course Page`
+![Add Course Page](./Assets/addcourse.png)
+
+`Add Chapter Page`
+![Add Chapter Page](./Assets/addchapter.png)
+
+`Add Page`
+![Add Page](./Assets/addpage.png)
+
+`Show chapter Page`
+![Show chapter Page](./Assets/showchapter.png)
+
+`My Courses Page`
+![My Courses Page](./Assets/mycourses.png)
+
+`Report Page`
+![Report Page](./Assets/report.png)
+
+### Thank You
+
+
+

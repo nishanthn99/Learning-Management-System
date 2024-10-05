@@ -17,7 +17,10 @@ module.exports.postUsers=async (req,res)=>{
             req.flash("error", "First name cannot be empty!");
             return res.redirect("/signup");
         }
-
+        if (firstName.length <3) {
+            req.flash("error", "First name should to minimum 3 letters!");
+            return res.redirect("/signup");
+        }
         if (password.length < 8) {
             req.flash("error", "Password must be at least 8 characters");
             return res.redirect("/signup");
