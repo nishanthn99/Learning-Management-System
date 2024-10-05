@@ -6,6 +6,10 @@ The Learning Management System (LMS) is an online platform designed to enhance i
 
 **Application URL:** [Website](https://learning-management-system-yjwk.onrender.com/)
 
+***Demo Video URL:*** 
+- [Demo Link](https://www.loom.com/share/38ffea2eab114f85b959b0ecf6194b41?sid=ff9450bc-1559-42bb-8228-558e362f7253)
+- [Continuation Part](https://www.loom.com/share/24a3d46485dc44c684eb0b16d466e5ae?sid=17cbac50-662c-4204-8c9b-76ccfab58b06)
+
 ## Key Features
 
 ### For Educators
