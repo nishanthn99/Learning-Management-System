@@ -58,7 +58,7 @@ The Learning Management System (LMS) is an online platform designed to enhance i
 ![ForgotPassword Page](./Assets/forgotpassword.png)
 
 `Educator Dashboard Page`
-![Educator Dashboard Page](./Assets/Dashboard.png)
+![Educator Dashboard Page](./Assets/DashBoard.png)
 
 `Student Dashboard Page`
 ![Student Dashboard Page](./Assets/student.png)
